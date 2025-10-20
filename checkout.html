@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nyra AI | Checkout & Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(245, 215, 110, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: #f5d76e;
+      text-shadow: 0 0 15px rgba(245, 215, 110, 0.6);
+    }
+
+    .checkout-container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 90%;
+        max-width: 1000px;
+        margin: 40px 0;
+        gap: 30px;
+    }
+
+    .billing-section, .delivery-section {
+        background: rgba(30, 30, 30, 0.9);
+        border: 2px solid #FFD700;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 0 20px rgba(245, 215, 110, 0.3);
+    }
+
+    .billing-section {
+        flex: 2; /* Cart and Bill */
+    }
+
+    .delivery-section {
+        flex: 1; /* Delivery Info and Pharmacy */
+    }
+
+    h2 {
+        color: #FFD700;
+        border-bottom: 1px solid #444;
+        padding-bottom: 10px;
+        margin-top: 0;
+        font-size: 1.8em;
+    }
+    
+    /* Cart and Bill Styles */
+    #cartList {
+        list-style: none;
+        padding: 0;
+    }
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #222;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        font-size: 1.1em;
+    }
+    
+    .total {
+        font-size: 1.4em;
+        font-weight: 700;
+        color: #f5d76e;
+        border-top: 2px solid #555;
+        padding-top: 15px;
+        margin-top: 20px;
+    }
+
+    /* Delivery Styles */
+    .delivery-info p {
+        color: #ccc;
+        margin: 5px 0;
+    }
+    
+    .pharmacy-info {
+        margin-top: 25px;
+        padding: 15px;
+        background: #1a1a1a;
+        border-radius: 8px;
+        border-left: 5px solid #ff5555;
+    }
+    .pharmacy-info h4 {
+        color: #ff5555;
+        margin-top: 0;
+    }
+
+    .place-order-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #b89628, #f5d76e);
+      color: #000;
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.2em;
+      margin-top: 30px;
+      transition: background-color 0.3s;
+    }
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: linear-gradient(90deg, #b89628, #f5d76e);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Order Checkout & Delivery Details</h1>
+    <p style="color:#d6c269;">Review your order, delivery location, and nearest pharmacy.</p>
+  </header>
+
+  <div class="checkout-container">
+    
+    <div class="billing-section">
+        <h2>Your Cart Items</h2>
+        <ul id="cartList">
+            </ul>
+        
+        <div class="summary-item"><span>Subtotal:</span><span id="subtotal">₹0</span></div>
+        <div class="summary-item"><span>Delivery Fee:</span><span id="deliveryFee">₹50.00</span></div>
+
+        <div class="total">
+            Grand Total: <span id="grandTotal">₹50.00</span>
+        </div>
+        
+        <button class="place-order-btn" onclick="placeOrder()">Place Order & Pay</button>
+
+    </div>
+
+    <div class="delivery-section">
+        <h2>Delivery Information</h2>
+        
+        <div class="delivery-info">
+            <h4>Recipient Contact:</h4>
+            <p id="recipientName">Human Profile Name (Simulated)</p>
+            <p id="recipientPhone">**+91 98765 43210** (From Profile)</p>
+            
+            <h4 style="margin-top: 20px;">Delivery Address:</h4>
+            <p id="deliveryAddress">**123 Wellness Ave, Health City, MH - 400001** (From Profile)</p>
+        </div>
+
+        <div class="pharmacy-info">
+            <h4>Nearest Delivery Pharmacy 📍</h4>
+            <p><strong>Pharmacy Name:</strong> Nyra Health Pharmacy, City Branch</p>
+            <p><strong>Distance to Destination:</strong> 2.5 km</p>
+            <p><strong>Estimated Delivery:</strong> 45 - 60 minutes</p>
+            <p style="font-size: 0.85em; color: #aaa;">Your order will be fulfilled and dispatched from this location.</p>
+        </div>
+
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='human_medicine.html'">← Back to Medicine Store</button>
+
+  <footer>© 2025 Nyra AI. Wellness in Every Dose.</footer>
+  
+  <script>
+    const STORAGE_KEY = 'nyra_human_cart';
+    const deliveryCharge = 50.00;
+
+    function getCart() {
+        const cartJson = localStorage.getItem(STORAGE_KEY);
+        return cartJson ? JSON.parse(cartJson) : {};
+    }
+
+    function renderCartAndBill() {
+        const cart = getCart();
+        const cartList = document.getElementById('cartList');
+        let subtotal = 0;
+        let cartHtml = '';
+        let totalItems = 0;
+
+        for (const name in cart) {
+            const item = cart[name];
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
+            totalItems += item.quantity;
+
+            cartHtml += `
+                <li class="cart-item">
+                    <span>${name} x${item.quantity}</span>
+                    <span>₹${itemTotal.toFixed(2)}</span>
+                </li>
+            `;
+        }
+
+        if (totalItems === 0) {
+            cartHtml = '<p style="color:#ff5555; text-align:center;">Your cart is empty. Please return to the store.</p>';
+            document.querySelector('.place-order-btn').disabled = true;
+            document.getElementById('deliveryFee').textContent = '₹0.00';
+        }
+
+        const grandTotal = subtotal + (totalItems > 0 ? deliveryCharge : 0);
+
+        cartList.innerHTML = cartHtml;
+        document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+        document.getElementById('grandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
+    }
+
+    function placeOrder() {
+        const cart = getCart();
+        let totalItems = 0;
+        for (const name in cart) {
+            totalItems += cart[name].quantity;
+        }
+
+        if (totalItems === 0) {
+             alert('❌ Cart is empty. Cannot place order.');
+             return;
+        }
+        
+        const total = parseFloat(document.getElementById('grandTotal').textContent.replace('₹', ''));
+        
+        // Simulating the final payment/order confirmation
+        alert(`✅ Payment successful! Total Paid: ₹${total.toFixed(2)}. Redirecting to live tracking...`);
+
+        // Clear cart after successful order
+        localStorage.removeItem(STORAGE_KEY);
+        
+        // Redirect to the new tracking page
+        window.location.href = 'delivery_tracking.html';
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', renderCartAndBill);
+  </script>
+</body>
+</html>

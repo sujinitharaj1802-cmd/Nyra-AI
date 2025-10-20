@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Home Consult Bill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gold: #f5d76e;
+      --shadow-gold: rgba(245, 215, 110, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --text-color: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-gold);
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--primary-gold);
+      text-shadow: 0 0 15px var(--shadow-gold);
+    }
+    header p {
+        color: #ccc;
+    }
+
+    .bill-container {
+      background: var(--card-bg);
+      border: 3px solid var(--primary-gold);
+      border-radius: 15px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 25px var(--shadow-gold);
+    }
+    
+    .bill-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #444;
+        font-size: 1.1em;
+    }
+    
+    .bill-item strong {
+        color: var(--primary-gold);
+    }
+
+    .bill-total {
+        padding-top: 20px;
+        margin-top: 20px;
+        border-top: 2px solid var(--primary-gold);
+        font-size: 1.5em;
+        font-weight: 700;
+    }
+    
+    .bill-total span {
+        color: var(--primary-gold);
+    }
+
+    .pay-btn {
+        width: 100%;
+        margin-top: 40px;
+        padding: 15px;
+        background: var(--primary-gold);
+        color: var(--dark-bg);
+        border: none;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+
+    .note {
+        margin-top: 20px;
+        font-size: 0.85em;
+        color: #aaa;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Home Consult Payment Summary 🏠</h1>
+    <p>Review the details for your premium in-person doctor visit.</p>
+  </header>
+
+  <div class="bill-container">
+    <h2>Invoice Details</h2>
+
+    <div class="bill-item">
+        <span>Service Type:</span>
+        <strong id="serviceType">Premium Home Visit</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Assigned Team:</span>
+        <strong id="consultantName">Urgent Care Specialist</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Scheduled Date & Time:</span>
+        <strong><span id="dateTime">Tomorrow, 10:00 AM (local)</span></strong>
+    </div>
+    
+    <div class="bill-item">
+        <span>Base House Call Fee:</span>
+        <strong id="consultFee">$150.00</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Premium Mobility Charge:</span>
+        <strong>$25.00</strong>
+    </div>
+    
+    <div class="bill-item">
+        <span>Platform Service Charge:</span>
+        <strong>$10.00</strong>
+    </div>
+
+
+    <div class="bill-total bill-item">
+        <span>Total Payable (Minimum):</span>
+        <span><strong id="totalPayable">$185.00</strong></span>
+    </div>
+
+    <button class="pay-btn" onclick="alert('Proceeding to secure payment for $185.00...')">Confirm & Pay Deposit</button>
+
+    <p class="note">This is a minimum fee. Final cost may adjust slightly based on diagnostics performed during the visit. A 10% deposit is required.</p>
+  </div>
+
+  <button class="back-btn" onclick="history.back()">← Back to Selection</button>
+
+  <footer>© 2025 Nyra AI. Secure Transactions.</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // This script is simplified since the previous page (human_teleconsult_home.html) already sets the context
+        const baseFee = 150.00; 
+        const mobilityCharge = 25.00;
+        const platformCharge = 10.00;
+        const total = baseFee + mobilityCharge + platformCharge;
+
+        document.getElementById('consultFee').textContent = `$${baseFee.toFixed(2)}`;
+        document.getElementById('totalPayable').textContent = `$${total.toFixed(2)}`;
+        
+        // Simulating the booked time for better context
+        const now = new Date();
+        now.setDate(now.getDate() + 1); // Set to tomorrow
+        now.setHours(10, 0, 0, 0); // Set to 10:00 AM
+        
+        const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        const dateString = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+        document.getElementById('dateTime').textContent = `${dateString}, ${timeString}`;
+    });
+  </script>
+</body>
+</html>

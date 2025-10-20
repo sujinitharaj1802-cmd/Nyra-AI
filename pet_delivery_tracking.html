@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nyra AI | Pet Order Tracking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gold: #f5d76e;
+      --pet-red: #ff7f50; /* Coral/Orange-red for pet alerts */
+      --dog-blue: #4a90e2; /* Blue tracking theme */
+      --dark-bg: #0a0a0a;
+      --neon-green: #39ff14; /* Using the bright neon color */
+      
+      /* Base64 SVG for Paw Print background */
+      --map-grid-svg: url("data:image/svg+xml;charset=utf8,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50' y='50' font-size='30' text-anchor='middle' fill='%23666' fill-opacity='0.05' transform='rotate(-45 50 50)'%3E🐾%3C/text%3E%3C/svg%3E");
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--dog-blue);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(74, 144, 226, 0.3);
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--dog-blue);
+      text-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+    }
+    header p {
+        color: #d6c269;
+    }
+
+    .tracking-container {
+        display: flex;
+        width: 90%;
+        max-width: 1200px;
+        gap: 30px;
+        flex-wrap: wrap; 
+    }
+    
+    /* LEFT SECTION: MAP */
+    .map-section {
+        flex: 2; 
+        background-color: var(--dark-bg);
+        background-image: var(--map-grid-svg); /* Paw Print Grid */
+        background-size: 100px 100px;
+        border: 2px solid var(--dog-blue);
+        border-radius: 15px;
+        position: relative;
+        overflow: hidden;
+        min-height: 600px;
+        box-shadow: 0 0 30px rgba(74, 144, 226, 0.3);
+    }
+
+    .map-placeholder {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        padding: 50px 0;
+    }
+
+    /* Vertical Curved Path Styling */
+    .tracking-path {
+        position: absolute;
+        width: 4px; 
+        background: #444; 
+        height: 80%;
+        left: 50%;
+        top: 10%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    /* Path Fill/Progress */
+    .path-progress {
+        width: 100%;
+        height: 0;
+        background: var(--pet-red); 
+        transition: height 25s linear; 
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transform-origin: bottom;
+    }
+
+    /* Waypoint Icons */
+    .waypoint {
+        position: absolute;
+        font-size: 2em;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 5;
+        padding: 5px;
+        background: var(--dark-bg);
+        border-radius: 50%;
+    }
+
+    /* Specific Waypoint Locations (Vertical Layout) */
+    .waypoint-pharmacy { top: 5%; color: var(--dog-blue); font-size: 2.5em; }
+    .waypoint-landmark { top: 25%; color: #ccc; }
+    .waypoint-neighbor { top: 55%; color: #ccc; }
+    .waypoint-home { top: 85%; color: var(--pet-red); font-size: 2.5em; }
+
+    /* Animated Delivery Icon */
+    #deliveryIcon {
+        position: absolute;
+        font-size: 2.5em;
+        left: 50%;
+        top: 5%; 
+        transform: translateX(-50%);
+        transition: all 25s linear; 
+        z-index: 10;
+        animation: pulse-glow 1.5s infinite alternate;
+    }
+    
+    /* Animated Glowing Effect */
+    @keyframes pulse-glow {
+      from { transform: translateX(-50%) scale(1); text-shadow: 0 0 5px var(--dog-blue); }
+      to { transform: translateX(-50%) scale(1.05); text-shadow: 0 0 10px var(--pet-red), 0 0 15px rgba(255, 127, 80, 0.3); }
+    }
+
+    /* RIGHT SECTION: STATUS */
+    .status-section {
+        flex: 1;
+        background: rgba(30, 30, 30, 0.9);
+        border: 2px solid var(--dog-blue);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+    }
+
+    .status-section h2 {
+        color: var(--dog-blue);
+    }
+
+    .status-item {
+        border-left: 4px solid var(--dog-blue);
+        padding-left: 15px;
+        margin-bottom: 20px;
+        transition: all 0.5s;
+    }
+
+    .status-item.active {
+        border-left-color: var(--pet-red);
+        box-shadow: 0 0 10px rgba(255, 127, 80, 0.5);
+    }
+
+    .status-item h4 {
+        color: var(--pet-red);
+        margin: 5px 0;
+    }
+    
+    /* NEW: High Contrast Style for Final Delivered Status */
+    .status-item.delivered {
+        background: rgba(57, 255, 20, 0.1);
+        border: 2px solid var(--neon-green);
+        color: var(--neon-green);
+        box-shadow: 0 0 10px var(--neon-green), 0 0 20px rgba(57, 255, 20, 0.4);
+        padding: 15px;
+        font-weight: 700;
+    }
+    
+    .status-item.delivered h4 {
+        color: var(--neon-green);
+        font-size: 1.4em;
+        margin-top: 0;
+    }
+    /* ------------------------------------------------- */
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: linear-gradient(90deg, #b89628, var(--dog-blue));
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1><span style="color:var(--pet-red);">Live Pet Order Tracking</span> 🐕</h1>
+    <p>Your pet's medicine is on the way! **Tracking ID: NYRAI-PET-587**</p>
+  </header>
+
+  <div class="tracking-container">
+    
+    <div class="map-section">
+        <div class="map-placeholder">
+            
+            <div class="tracking-path">
+                <div class="path-progress" id="pathProgress"></div>
+            </div>
+            
+            <span class="waypoint waypoint-pharmacy" title="Pet Supply Store">🏥</span>
+            <span class="waypoint waypoint-landmark" title="Park Landmark">🌳</span>
+            <span class="waypoint waypoint-neighbor" title="Neighborhood Zone">🏘️</span>
+            <span class="waypoint waypoint-home" title="Destination">🏠</span>
+
+            <span class="delivery-icon" id="deliveryIcon" title="Pet Delivery Truck">🚚</span>
+            
+        </div>
+    </div>
+
+    <div class="status-section">
+        <h2>Order Status & Details</h2>
+        
+        <div id="statusUpdates">
+            <div class="status-item active" id="statusOutForDelivery">
+                <h4>Out for Delivery!</h4>
+                <p>The rider is on the way from Nyra Pet Supplies, Central Branch.</p>
+            </div>
+            <div class="status-item" id="statusOrderPacked">
+                <h4>Order Packed</h4>
+                <p>Your pet's supplies are securely sealed and ready for dispatch.</p>
+            </div>
+            <div class="status-item" id="statusVerified">
+                <h4>Vet Prescription Verified</h4>
+                <p>Your pet's medical needs have been successfully confirmed.</p>
+            </div>
+        </div>
+
+        <div class="delivery-person-info">
+            <h3>Delivery Person:</h3>
+            <p><strong>Name:</strong> Priya Varma</p>
+            <p><strong>Contact:</strong> +91 99XXXXX456</p>
+            <p><strong>Estimated Time:</strong> <span style="font-weight: 700; color: var(--pet-red);" id="estimatedTime">40 minutes</span></p>
+        </div>
+
+        <button class="back-btn" style="width: 100%; margin-top: 30px;" onclick="window.location.href='pet_home.html'">Back to Dashboard</button>
+    </div>
+  </div>
+
+  <footer>© 2025 Nyra AI. Pet Wellness in Every Dose.</footer>
+  
+  <script>
+    const pathProgress = document.getElementById('pathProgress');
+    const deliveryIcon = document.getElementById('deliveryIcon');
+    const estimatedTimeElement = document.getElementById('estimatedTime');
+    const statusUpdatesContainer = document.getElementById('statusUpdates');
+    
+    function moveTruckTo(percent) {
+        pathProgress.style.height = percent + '%';
+        deliveryIcon.style.top = percent + '%';
+    }
+
+    function updateStatus(newTitle, newTime, isDelivered = false) {
+        const activeItem = document.querySelector('.status-item.active');
+        if (activeItem) {
+            activeItem.classList.remove('active');
+        }
+
+        const newStatus = document.createElement('div');
+        newStatus.classList.add('status-item', 'active');
+        
+        if (isDelivered) {
+            newStatus.classList.add('delivered');
+            newStatus.innerHTML = `<h4>${newTitle}</h4><p>Your order has been successfully completed!</p>`;
+        } else {
+            newStatus.innerHTML = `<h4>${newTitle}</h4><p>The delivery is estimated to arrive in ${newTime}.</p>`;
+        }
+        
+        // Prepend the new status to the container for reverse chronological order
+        statusUpdatesContainer.prepend(newStatus);
+        
+        estimatedTimeElement.textContent = newTime;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            moveTruckTo(85); 
+        }, 100); 
+
+        // 1. Passing Park Landmark (approx 25% progress)
+        setTimeout(() => {
+            updateStatus('Almost at the Dog Park!', '25 minutes');
+            document.querySelector('.waypoint-landmark').style.color = 'var(--pet-red)'; 
+        }, 8000); 
+
+        // 2. Passing Neighborhood Zone (approx 55% progress)
+        setTimeout(() => {
+            updateStatus('Arriving Soon! 🐕', '10 minutes');
+            document.querySelector('.waypoint-neighbor').style.color = 'var(--pet-red)';
+        }, 18000); 
+
+        // 3. Final Arrival - Now with high contrast for the text
+        setTimeout(() => {
+            updateStatus('Delivered! Give your dog a treat! 🎉', '0 minutes', true); // Pass true for isDelivered
+            document.querySelector('.waypoint-home').style.color = 'var(--pet-red)';
+            deliveryIcon.style.display = 'none'; 
+            estimatedTimeElement.textContent = 'Delivered!';
+        }, 25000);
+    });
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Consultation Bill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gold: #f5d76e;
+      --shadow-gold: rgba(245, 215, 110, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --text-color: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-gold);
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--primary-gold);
+      text-shadow: 0 0 15px var(--shadow-gold);
+    }
+    header p {
+        color: #ccc;
+    }
+
+    .bill-container {
+      background: var(--card-bg);
+      border: 3px solid var(--primary-gold);
+      border-radius: 15px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 25px var(--shadow-gold);
+    }
+    
+    .bill-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #444;
+        font-size: 1.1em;
+    }
+    
+    .bill-item strong {
+        color: var(--primary-gold);
+    }
+
+    .bill-total {
+        padding-top: 20px;
+        margin-top: 20px;
+        border-top: 2px solid var(--primary-gold);
+        font-size: 1.5em;
+        font-weight: 700;
+    }
+    
+    .bill-total span {
+        color: var(--primary-gold);
+    }
+
+    .pay-btn {
+        width: 100%;
+        margin-top: 40px;
+        padding: 15px;
+        background: var(--primary-gold);
+        color: var(--dark-bg);
+        border: none;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: opacity 0.3s;
+    }
+
+    .note {
+        margin-top: 20px;
+        font-size: 0.85em;
+        color: #aaa;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Consultation Payment Summary 💳</h1>
+    <p>Review the details before proceeding to a secure payment gateway.</p>
+  </header>
+
+  <div class="bill-container">
+    <h2>Invoice Details</h2>
+
+    <div class="bill-item">
+        <span>Service Type:</span>
+        <strong id="serviceType">Video Consultation</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Consultant:</span>
+        <strong id="consultantName">Dr. A. Menon</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Date & Time:</span>
+        <strong><span id="dateTime">Today, 5:30 PM (IST)</span></strong>
+    </div>
+    
+    <div class="bill-item">
+        <span>Consultation Fee:</span>
+        <strong id="consultFee">$30.00</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Platform Service Charge:</span>
+        <strong>$5.00</strong>
+    </div>
+
+    <div class="bill-total bill-item">
+        <span>Total Payable:</span>
+        <span><strong id="totalPayable">$35.00</strong></span>
+    </div>
+
+    <button class="pay-btn" onclick="alert('Redirecting to Payment Gateway...')">Proceed to Secure Payment</button>
+
+    <p class="note">A 5% service charge is included. If the doctor is unable to attend, the fee will be refunded in full.</p>
+  </div>
+
+  <button class="back-btn" onclick="history.back()">← Back to Selection</button>
+
+  <footer>© 2025 Nyra AI. Secure Transactions.</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const service = urlParams.get('service') || 'video';
+        const fee = parseFloat(urlParams.get('fee')) || 30.00;
+        const doctor = urlParams.get('doctor');
+        
+        const serviceCharge = 5.00;
+        const total = fee + serviceCharge;
+
+        const serviceMap = {
+            'video': 'Virtual Video Consult',
+            'home': 'Premium Home Visit'
+        };
+        const doctorMap = {
+            'sharma': 'Dr. R. Sharma (Cardiologist)',
+            'menon': 'Dr. A. Menon (General Physician)',
+            // Add a default or lookup for home consults here if necessary
+            'default': 'Unspecified Consultant' 
+        };
+
+        // Populate elements
+        document.getElementById('serviceType').textContent = serviceMap[service] || serviceMap['video'];
+        document.getElementById('consultantName').textContent = doctorMap[doctor] || doctorMap['default'];
+        document.getElementById('consultFee').textContent = `$${fee.toFixed(2)}`;
+        document.getElementById('totalPayable').textContent = `$${total.toFixed(2)}`;
+        
+        // Dynamic date time (Placeholder)
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        const dateString = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        document.getElementById('dateTime').textContent = `${dateString}, ${timeString}`;
+    });
+  </script>
+</body>
+</html>

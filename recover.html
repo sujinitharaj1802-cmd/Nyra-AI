@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Wellness Check-in</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(245, 215, 110, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: #f5d76e;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(30, 30, 30, 0.9);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    .section-title {
+        color: #FFD700;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        font-size: 1.8em;
+        border-bottom: 2px solid #444;
+        padding-bottom: 10px;
+    }
+    
+    /* --- Form Styling --- */
+    label {
+        display: block;
+        color: #FFD700;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #555;
+        background: #1a1a1a;
+        color: #fff;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 1em;
+        resize: vertical;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        background-color: #FFD700;
+        color: #000;
+        border: none;
+        padding: 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.1em;
+        margin-top: 25px;
+        transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #E0C97F;
+    }
+
+    /* --- Advice Box --- */
+    #adviceBox {
+        margin-top: 30px;
+        padding: 20px;
+        border: 2px solid #5cb85c; /* Default Green for Wellness */
+        border-radius: 10px;
+        background: #1a1a1a;
+        display: none; /* Hidden by default */
+        text-align: left;
+    }
+    
+    #adviceBox.warning {
+        border-color: #d9534f; /* Red for Warning */
+    }
+    
+    #adviceBox h4 {
+        color: #fff;
+        margin-top: 0;
+        border-bottom: 1px solid #444;
+        padding-bottom: 5px;
+        font-size: 1.2em;
+    }
+    
+    #adviceList {
+        list-style: none;
+        padding-left: 0;
+    }
+    #adviceList li {
+        margin-bottom: 10px;
+        color: #ccc;
+        font-size: 0.95em;
+    }
+    #adviceList li strong {
+        color: #FFD700;
+    }
+
+    .back-btn {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #FFD700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 15px 0;
+      background: rgba(0, 0, 0, 0.5);
+      margin-top: auto;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Daily Wellness Check-in</h1>
+    <p style="color: #d6c269">Proactive steps for long-term recovery and prevention.</p>
+  </header>
+
+  <div class="container">
+    <h2 class="section-title">📝 Today's Health Snapshot</h2>
+    
+    <form id="wellnessForm" onsubmit="processCheckIn(event)">
+        <label for="mood">How are you feeling today?</label>
+        <select id="mood" required>
+            <option value="Great">Great 😊</option>
+            <option value="Good">Good 🙂</option>
+            <option value="Neutral">Neutral 😐</option>
+            <option value="Poor">Poor 😟</option>
+            <option value="Bad">Bad 😔</option>
+        </select>
+        
+        <label for="sleepHours">Hours of Sleep last night:</label>
+        <input type="number" id="sleepHours" placeholder="e.g., 7.5" step="0.5" min="0" max="12" required>
+        
+        <label for="symptoms">Any new symptoms or concerns?</label>
+        <textarea id="symptoms" rows="2" placeholder="e.g., slight headache, low energy, no issues"></textarea>
+        
+        <label for="routine">Briefly describe your food/exercise routine today:</label>
+        <textarea id="routine" rows="2" placeholder="e.g., Light workout, skipped lunch, well hydrated"></textarea>
+
+        <button type="submit">Get Wellness Advice</button>
+    </form>
+    
+    <div id="adviceBox">
+        <h4 id="adviceTitle"></h4>
+        <ul id="adviceList"></ul>
+    </div>
+
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='home.html'">
+    ← Back to Dashboard
+  </button>
+
+  <footer>© 2025 Nyra AI. Wellness in Every Dose.</footer>
+
+  <script>
+    const adviceBox = document.getElementById('adviceBox');
+    const adviceTitle = document.getElementById('adviceTitle');
+    const adviceList = document.getElementById('adviceList');
+
+    /**
+     * Analyzes user input and generates proactive wellness advice.
+     */
+    function processCheckIn(event) {
+        event.preventDefault();
+
+        const mood = document.getElementById('mood').value;
+        const sleepHours = parseFloat(document.getElementById('sleepHours').value);
+        const symptoms = document.getElementById('symptoms').value.toLowerCase();
+        const routine = document.getElementById('routine').value.toLowerCase();
+        
+        let advice = [];
+        let isWarning = false;
+
+        // --- 1. Analyze Symptoms ---
+        if (symptoms.includes('headache') || symptoms.includes('tired') || symptoms.includes('low energy')) {
+            advice.push("Since you reported feeling **low energy/headache**, ensure you are drinking at least 8 glasses of water today. Dehydration is a common trigger.");
+            isWarning = true;
+        }
+        if (symptoms.includes('sore throat') || symptoms.includes('cough')) {
+            advice.push("You mentioned **cold symptoms**. Increase your Vitamin C intake and keep a safe distance from others to prevent potential spreading.");
+            isWarning = true;
+        }
+
+        // --- 2. Analyze Sleep ---
+        if (sleepHours < 6) {
+            advice.push(`With only **${sleepHours} hours of sleep**, prioritize an early night tonight. Chronic sleep deprivation affects immunity.`);
+            isWarning = true;
+        } else if (sleepHours >= 9) {
+            advice.push("You had **ample sleep**! Focus on moderate activity today to maintain a healthy sleep-wake cycle.");
+        }
+
+        // --- 3. Analyze Routine ---
+        if (routine.includes('skip') || routine.includes('no lunch') || routine.includes('no meal')) {
+            advice.push("You **skipped a meal** today. Regular, balanced meals are crucial for stable energy and metabolism. Please eat a snack now.");
+            isWarning = true;
+        }
+        if (!routine.includes('workout') && !routine.includes('active') && !routine.includes('walk')) {
+            advice.push("Try to incorporate at least **30 minutes of light movement** (like a brisk walk) today to boost circulation and mood.");
+        }
+        
+        // --- 4. General Advice / Mood ---
+        if (advice.length === 0) {
+             advice.push("Your check-in looks good! Continue prioritizing **balanced nutrition** and **adequate rest** to maintain your wellness.");
+        }
+        
+        if (mood === 'Bad' || mood === 'Poor') {
+             advice.push("If your mood persists, consider reaching out to a support system or using the **Teleconsult** feature for mental wellness advice.");
+             isWarning = true;
+        }
+        
+        // --- Output Generation ---
+        adviceList.innerHTML = '';
+        advice.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `• ${item}`;
+            adviceList.appendChild(listItem);
+        });
+
+        if (isWarning) {
+            adviceBox.classList.add('warning');
+            adviceTitle.textContent = "⚠️ Important Preventative Steps";
+        } else {
+            adviceBox.classList.remove('warning');
+            adviceTitle.textContent = "✅ Nyra Wellness Suggestions";
+        }
+
+        adviceBox.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

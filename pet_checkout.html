@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nyra AI | Pet Checkout & Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --pet-accent: #6ee6c9; /* Teal/Green for Pet focus */
+      --pet-shadow: rgba(110, 230, 201, 0.4);
+      --gold: #f5d76e;
+      --dog-blue: #4a90e2; /* Blue for contrast in checkout */
+      --neon-green: #39ff14; /* Neon color definition */
+      --dark-bg: #0a0a0a;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: var(--pet-accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--pet-shadow);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--dog-blue);
+      text-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+    }
+    header p {
+        color: #d6c269;
+    }
+
+    .checkout-container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 90%;
+        max-width: 1000px;
+        margin: 40px 0;
+        gap: 30px;
+    }
+
+    .billing-section, .delivery-section {
+        background: rgba(30, 30, 30, 0.9);
+        border: 2px solid var(--dog-blue);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+    }
+
+    .billing-section {
+        flex: 2; /* Cart and Bill */
+    }
+
+    .delivery-section {
+        flex: 1; /* Delivery Info and Pharmacy */
+    }
+
+    h2 {
+        color: var(--dog-blue);
+        border-bottom: 1px solid #444;
+        padding-bottom: 10px;
+        margin-top: 0;
+        font-size: 1.8em;
+    }
+    
+    /* Cart and Bill Styles */
+    #cartList {
+        list-style: none;
+        padding: 0;
+    }
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #222;
+        color: var(--pet-accent);
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        font-size: 1.1em;
+    }
+    
+    .total {
+        font-size: 1.4em;
+        font-weight: 700;
+        color: var(--gold);
+        border-top: 2px solid #555;
+        padding-top: 15px;
+        margin-top: 20px;
+    }
+
+    /* Delivery Styles */
+    .delivery-info p {
+        color: #ccc;
+        margin: 5px 0;
+    }
+    
+    .pharmacy-info {
+        margin-top: 25px;
+        padding: 15px;
+        background: #1a1a1a;
+        border-radius: 8px;
+        border-left: 5px solid var(--dog-blue);
+    }
+    .pharmacy-info h4 {
+        color: var(--dog-blue);
+        margin-top: 0;
+    }
+
+    /* NEW NEON STYLING for Place Order Button */
+    .place-order-btn {
+      width: 100%;
+      background: var(--dark-bg); /* Dark background for neon border visibility */
+      color: var(--neon-green);
+      border: 2px solid var(--neon-green); /* Neon border */
+      box-shadow: 0 0 10px var(--neon-green), 0 0 20px rgba(57, 255, 20, 0.4); /* Neon glow effect */
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.2em;
+      margin-top: 30px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .place-order-btn:hover {
+        background: rgba(57, 255, 20, 0.1);
+        transform: scale(1.01);
+    }
+    /* ------------------------------------- */
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: var(--pet-accent);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Pet Order Checkout & Delivery Details 🐾</h1>
+    <p>Review your **Pet's order**, delivery location, and nearest pharmacy.</p>
+  </header>
+
+  <div class="checkout-container">
+    
+    <div class="billing-section">
+        <h2>Pet Cart Items</h2>
+        <ul id="cartList">
+            </ul>
+        
+        <div class="summary-item"><span>Subtotal:</span><span id="subtotal">₹0</span></div>
+        <div class="summary-item"><span>Delivery Fee:</span><span id="deliveryFee">₹50.00</span></div>
+
+        <div class="total">
+            Grand Total: <span id="grandTotal">₹50.00</span>
+        </div>
+        
+        <button class="place-order-btn" onclick="placePetOrder()">Place Order & Pay</button>
+
+    </div>
+
+    <div class="delivery-section">
+        <h2>Delivery Information</h2>
+        
+        <div class="delivery-info">
+            <h4>Recipient Contact: (Human Profile)</h4>
+            <p id="recipientName">Human Profile Name (Simulated)</p>
+            <p id="recipientPhone">**+91 98765 43210**</p>
+            
+            <h4 style="margin-top: 20px;">Delivery Address:</h4>
+            <p id="deliveryAddress">**123 Wellness Ave, Health City, MH - 400001**</p>
+        </div>
+
+        <div class="pharmacy-info">
+            <h4>Nearest Vet Supply Pharmacy 📍</h4>
+            <p><strong>Pharmacy Name:</strong> Nyra Pet Supplies, Central Branch</p>
+            <p><strong>Distance to Destination:</strong> 3.1 km</p>
+            <p><strong>Estimated Delivery:</strong> 60 - 75 minutes</p>
+            <p style="font-size: 0.85em; color: #aaa;">Your pet's order will be fulfilled and dispatched from this dedicated veterinary supply location.</p>
+        </div>
+
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='pet_medicine.html'">← Back to Pet Store</button>
+
+  <footer>© 2025 Nyra AI. Pet Wellness in Every Dose.</footer>
+  
+  <script>
+    const STORAGE_KEY = 'nyra_pet_cart'; // Pet Cart Key
+    const deliveryCharge = 50.00;
+
+    function getCart() {
+        const cartJson = localStorage.getItem(STORAGE_KEY);
+        return cartJson ? JSON.parse(cartJson) : {};
+    }
+
+    function renderCartAndBill() {
+        const cart = getCart();
+        const cartList = document.getElementById('cartList');
+        let subtotal = 0;
+        let cartHtml = '';
+        let totalItems = 0;
+
+        for (const name in cart) {
+            const item = cart[name];
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
+            totalItems += item.quantity;
+
+            cartHtml += `
+                <li class="cart-item">
+                    <span>${name} x${item.quantity}</span>
+                    <span>₹${itemTotal.toFixed(2)}</span>
+                </li>
+            `;
+        }
+
+        if (totalItems === 0) {
+            cartHtml = '<p style="color:#ff5555; text-align:center;">Your pet\'s cart is empty. Please return to the store.</p>';
+            document.querySelector('.place-order-btn').disabled = true;
+            document.getElementById('deliveryFee').textContent = '₹0.00';
+        } else {
+             document.querySelector('.place-order-btn').disabled = false;
+             document.getElementById('deliveryFee').textContent = `₹${deliveryCharge.toFixed(2)}`;
+        }
+
+        const grandTotal = subtotal + (totalItems > 0 ? deliveryCharge : 0);
+
+        cartList.innerHTML = cartHtml;
+        document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+        document.getElementById('grandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
+    }
+
+    // --- FUNCTION TO PLACE PET ORDER ---
+    function placePetOrder() {
+        const cart = getCart();
+        let totalItems = 0;
+        for (const name in cart) {
+            totalItems += cart[name].quantity;
+        }
+
+        if (totalItems === 0) {
+             alert('❌ Cart is empty. Cannot place order.');
+             return;
+        }
+        
+        const total = parseFloat(document.getElementById('grandTotal').textContent.replace('₹', ''));
+        
+        // Simulating the final payment/order confirmation
+        alert(`✅ Pet Payment successful! Total Paid: ₹${total.toFixed(2)}. Redirecting to live pet tracking...`);
+
+        // Clear pet cart after successful order
+        localStorage.removeItem(STORAGE_KEY);
+        
+        // Redirect to the new dedicated pet tracking page
+        window.location.href = 'pet_delivery_tracking.html';
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', renderCartAndBill);
+  </script>
+</body>
+</html>

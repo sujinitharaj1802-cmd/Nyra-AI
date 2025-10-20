@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Pet Consult Options</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pet-accent: #6ee6c9; /* Teal/Green theme for Pet */
+      --shadow-pet: rgba(110, 230, 201, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --primary-gold: #f5d76e;
+      --text-color: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--pet-accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-pet);
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--pet-accent);
+      text-shadow: 0 0 15px var(--shadow-pet);
+    }
+    header p {
+        color: var(--primary-gold);
+    }
+
+    .selector-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      width: 90%;
+      max-width: 900px;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border: 3px solid var(--pet-accent);
+      border-radius: 15px;
+      padding: 30px;
+      width: 40%;
+      text-align: center;
+      box-shadow: 0 0 20px var(--shadow-pet);
+      transition: transform 0.3s, background 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      background: rgba(40, 40, 40, 0.95);
+    }
+
+    .service-card img {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+
+    .service-card h2 {
+      color: var(--pet-accent);
+      margin: 0 0 10px 0;
+      font-size: 1.6em;
+    }
+
+    .service-card p {
+      color: #ccc;
+      font-size: 0.95em;
+    }
+    
+    .call-to-action {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 25px;
+        background: var(--pet-accent);
+        color: var(--dark-bg);
+        border-radius: 30px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: var(--pet-accent);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Teleconsult Options for Pet Profile 🐾</h1>
+    <p>Choose your preferred method of consultation with our certified veterinarians.</p>
+  </header>
+
+  <div class="selector-container">
+    
+    <a href="pet_teleconsult_video.html" class="service-card">
+      <img src="https://img.icons8.com/ios-filled/100/6ee6c9/video-call.png" alt="Video Call">
+      <h2>Virtual Vet Consult</h2>
+      <p>Instant access to a licensed vet via secure video link. Great for quick checks and minor issues.</p>
+      <span class="call-to-action">Find Virtual Vet</span>
+    </a>
+
+    <a href="pet_teleconsult_home.html" class="service-card">
+      <img src="https://img.icons8.com/ios-filled/100/6ee6c9/dog-footprint.png" alt="House Call">
+      <h2>Home Visit Vet</h2>
+      <p>Schedule a veterinarian to visit your pet in the comfort of your home for stress-free exams.</p>
+      <span class="call-to-action">Book Home Visit</span>
+    </a>
+
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='pet_home.html'">← Back to Dashboard</button>
+
+  <footer>© 2025 Nyra AI. Pet Wellness Network.</footer>
+</body>
+</html>

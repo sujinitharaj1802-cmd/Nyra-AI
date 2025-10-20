@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Human Consult Options</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gold: #f5d76e;
+      --shadow-gold: rgba(245, 215, 110, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --text-color: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--primary-gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-gold);
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--primary-gold);
+      text-shadow: 0 0 15px var(--shadow-gold);
+    }
+    header p {
+        color: var(--text-color);
+    }
+
+    .selector-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      width: 90%;
+      max-width: 900px;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border: 3px solid var(--primary-gold);
+      border-radius: 15px;
+      padding: 30px;
+      width: 40%; /* Ensures two cards fit nicely side-by-side */
+      text-align: center;
+      box-shadow: 0 0 20px var(--shadow-gold);
+      transition: transform 0.3s, background 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      background: rgba(40, 40, 40, 0.95);
+    }
+
+    .service-card img {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+
+    .service-card h2 {
+      color: var(--primary-gold);
+      margin: 0 0 10px 0;
+      font-size: 1.6em;
+    }
+
+    .service-card p {
+      color: #ccc;
+      font-size: 0.95em;
+    }
+    
+    .call-to-action {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 25px;
+        background: var(--primary-gold);
+        color: var(--dark-bg);
+        border-radius: 30px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: var(--primary-gold);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Teleconsult Options for Human Profile</h1>
+    <p>Choose your preferred method of consultation with our certified doctors.</p>
+  </header>
+
+  <div class="selector-container">
+    
+    <a href="human_teleconsult_video.html" class="service-card">
+      <img src="https://img.icons8.com/ios-filled/100/f5d76e/video-call.png" alt="Video Call">
+      <h2>Video Consult</h2>
+      <p>Instant access to a doctor via secure video link. Best for minor symptoms and follow-ups.</p>
+      <span class="call-to-action">Find Virtual Doctor</span>
+    </a>
+
+    <a href="human_teleconsult_home.html" class="service-card">
+      <img src="https://img.icons8.com/ios-filled/100/f5d76e/home-delivery.png" alt="House Call">
+      <h2>Live Home Consult</h2>
+      <p>Schedule a doctor to visit you in person at your home. Ideal for comprehensive checks.</p>
+      <span class="call-to-action">Book House Call</span>
+    </a>
+
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='home.html'">← Back to Dashboard</button>
+
+  <footer>© 2025 Nyra AI. Premium Health Services.</footer>
+</body>
+</html>

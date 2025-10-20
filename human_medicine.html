@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nyra AI | Human Medicine Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(245, 215, 110, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: #f5d76e;
+      text-shadow: 0 0 15px rgba(245, 215, 110, 0.6);
+    }
+
+    .medicine-list {
+        width: 90%;
+        max-width: 1000px;
+        margin: 40px 0;
+    }
+
+    /* Medicine Grid Styling */
+    .med-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      justify-items: center;
+    }
+
+    .med-card {
+      background: rgba(15, 15, 15, 0.9);
+      border: 1px solid rgba(245, 215, 110, 0.2);
+      border-radius: 20px;
+      padding: 25px;
+      width: 200px;
+      color: #f5d76e;
+      box-shadow: 0 0 20px rgba(245, 215, 110, 0.1);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .med-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 30px rgba(245, 215, 110, 0.3);
+    }
+
+    .med-card img {
+      width: 80px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 10px rgba(245, 215, 110, 0.5));
+    }
+
+    .med-card h4 {
+      margin-bottom: 8px;
+    }
+
+    .med-card p {
+        font-size: 0.9em;
+        min-height: 40px; /* Ensure cards are uniform height */
+    }
+
+    .med-card button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #b89628, #f5d76e);
+      color: #000;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .med-card button:hover {
+      background: linear-gradient(90deg, #f5d76e, #b89628);
+      transform: scale(1.05);
+    }
+
+    /* New View Cart Button Styling */
+    .view-cart-btn {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      padding: 15px 30px;
+      background: #f5d76e;
+      color: #000;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1em;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      z-index: 20;
+      transition: background 0.3s;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ff5555;
+      color: white;
+      border-radius: 50%;
+      padding: 5px 8px;
+      font-size: 0.7em;
+      font-weight: 700;
+      display: none; /* Initially hidden */
+    }
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: linear-gradient(90deg, #b89628, #f5d76e);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Nyra AI – Human Medicine Store</h1>
+    <p style="color:#d6c269;">Select medicines. Delivery and billing will be confirmed on the checkout page.</p>
+  </header>
+
+  <div class="medicine-list">
+    <h2>Available Medicines</h2>
+    <div class="med-grid">
+        <div class="med-card" data-name="Paracetamol" data-price="50">
+            <img src="https://img.icons8.com/external-flat-juicy-fish/100/f5d76e/pill.png" alt="Paracetamol" />
+            <h4>Paracetamol (₹50)</h4>
+            <p>Fever & pain relief (OTC)</p>
+            <button onclick="addToCart(this)">Add to Cart</button>
+        </div>
+        <div class="med-card" data-name="Insulin" data-price="850">
+            <img src="https://img.icons8.com/ios-filled/100/f5d76e/syringe.png" alt="Insulin" />
+            <h4>Insulin (₹850)</h4>
+            <p>Diabetes management (Prescription Required)</p>
+            <button onclick="addToCart(this)">Add to Cart</button>
+        </div>
+        <div class="med-card" data-name="Vitamin C" data-price="200">
+            <img src="https://img.icons8.com/ios-filled/100/f5d76e/pills.png" alt="Vitamin C" />
+            <h4>Vitamin C (₹200)</h4>
+            <p>Immunity booster (OTC)</p>
+            <button onclick="addToCart(this)">Add to Cart</button>
+        </div>
+        <div class="med-card" data-name="Other Medicine" data-price="0">
+            <img src="https://img.icons8.com/ios-filled/100/f5d76e/medical-bag.png" alt="Prescription Drugs" />
+            <h4>Other/Prescription Medicine</h4>
+            <p style="color: #ff5555; font-weight: 600;">⚠️ These items require a doctor's prescription for delivery.</p>
+            <button onclick="handlePrescriptionOrder()">Upload Prescription</button>
+        </div>
+    </div>
+  </div>
+  
+  <button class="view-cart-btn" id="viewCartButton" onclick="redirectToCheckout()">
+    View Cart
+    <span class="cart-badge" id="cartBadge">0</span>
+  </button>
+
+  <button class="back-btn" onclick="window.location.href='home.html'">← Back to Dashboard</button>
+
+  <footer>© 2025 Nyra AI. Wellness in Every Dose.</footer>
+  
+  <script>
+    const STORAGE_KEY = 'nyra_human_cart';
+
+    /**
+     * Retrieves cart from localStorage or returns an empty object.
+     */
+    function getCart() {
+        const cartJson = localStorage.getItem(STORAGE_KEY);
+        return cartJson ? JSON.parse(cartJson) : {};
+    }
+
+    /**
+     * Saves cart to localStorage.
+     */
+    function saveCart(cart) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+        updateCartBadge(cart);
+    }
+
+    /**
+     * Updates the number on the View Cart button.
+     */
+    function updateCartBadge(cart) {
+        const badge = document.getElementById('cartBadge');
+        let totalItems = 0;
+        for (const name in cart) {
+            totalItems += cart[name].quantity;
+        }
+
+        badge.textContent = totalItems;
+        badge.style.display = totalItems > 0 ? 'block' : 'none';
+    }
+
+    function handlePrescriptionOrder() {
+        alert("You are now uploading a prescription. Please continue to checkout if you need other items.");
+    }
+
+    /**
+     * Adds the selected medicine to the cart and updates localStorage.
+     */
+    function addToCart(button) {
+        const card = button.closest('.med-card');
+        const name = card.getAttribute('data-name');
+        const price = parseFloat(card.getAttribute('data-price'));
+        
+        // This button is for a single item, not the "Other" card (price 0)
+        if (price === 0) return; 
+
+        let cart = getCart();
+        if (cart[name]) {
+            cart[name].quantity += 1;
+        } else {
+            cart[name] = { price: price, quantity: 1 };
+        }
+
+        saveCart(cart);
+        alert(`✅ Added ${name} to cart!`);
+    }
+
+    /**
+     * Redirects to the checkout page.
+     */
+    function redirectToCheckout() {
+        const cart = getCart();
+        let totalItems = 0;
+        for (const name in cart) {
+            totalItems += cart[name].quantity;
+        }
+        
+        if (totalItems === 0) {
+            alert('Your cart is empty. Please add items before checking out.');
+            return;
+        }
+        
+        window.location.href = 'checkout.html';
+    }
+
+    // Initial load: check cart state and update badge
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCartBadge(getCart());
+    });
+  </script>
+</body>
+</html>

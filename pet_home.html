@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Pet Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(121, 215, 110, 0.3);
+    }
+
+    header h1 {
+      font-size: 2.8em;
+      color: #79d76e; /* Green accent for Pet */
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px rgba(121, 215, 110, 0.6);
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 50px;
+      padding: 80px;
+      width: 90%;
+      justify-items: center;
+    }
+
+    .card {
+      background: rgba(15, 15, 15, 0.9);
+      border: 1px solid rgba(121, 215, 110, 0.2);
+      border-radius: 25px;
+      width: 260px;
+      height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #79d76e;
+      text-decoration: none;
+      box-shadow: 0 0 25px rgba(121, 215, 110, 0.2);
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 0 40px rgba(121, 215, 110, 0.4);
+    }
+
+    .card img {
+      width: 80px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 15px rgba(121, 215, 110, 0.5));
+    }
+
+    .card h3 {
+      font-size: 1.4em;
+      color: #a0f88f;
+    }
+    
+    .card p {
+      color: #ccc;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      text-align: center;
+      color: #b3a35b;
+      font-size: 0.9em;
+      border-top: 1px solid rgba(121, 215, 110, 0.2);
+      width: 100%;
+      background: rgba(15, 15, 15, 0.8);
+    }
+
+    .back-btn {
+      margin-top: 30px;
+      padding: 10px 25px;
+      background: linear-gradient(90deg, #5aa84e, #79d76e);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: linear-gradient(90deg, #79d76e, #5aa84e);
+      transform: scale(1.05);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .card img {
+      animation: float 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Nyra AI – Pet Dashboard</h1>
+    <p style="color:#d6c269;">Managing wellness and care for your beloved pets.</p>
+  </header>
+
+  <div class="container">
+    
+    <a href="pet_medicine.html" class="card">
+      <img src="https://img.icons8.com/ios-filled/100/79d76e/dog-foot-print.png" alt="Pet Medicine">
+      <h3>Pet Medicines</h3>
+      <p>Order prescribed or over-the-counter pet supplies.</p>
+    </a>
+
+    <a href="pet_ai.html" class="card">
+      <img src="https://img.icons8.com/ios-filled/100/79d76e/artificial-intelligence.png" alt="Pet AI Consult">
+      <h3>Pet AI Consult</h3>
+      <p>Chat with Nyra AI for instant **pet** health guidance.</p>
+    </a>
+
+    <a href="pet_teleconsult.html" class="card">
+      <img src="https://img.icons8.com/ios-filled/100/79d76e/veterinary-sign.png" alt="Veterinarian">
+      <h3>Find a Veterinarian</h3>
+      <p>Search for pet specialists and schedule live or virtual visits.</p>
+    </a>
+
+    <a href="pet_recover.html" class="card">
+      <img src="https://img.icons8.com/ios-filled/100/79d76e/pet-health-insurance.png" alt="Pet Wellness">
+      <h3>Pet Wellness</h3>
+      <p>Access pet care guides, vaccination history, and diet plans.</p>
+    </a>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='index.html'">← Back to Main Menu</button>
+
+  <footer>© 2025 Nyra AI. Crafted for Care & Innovation.</footer>
+</body>
+</html>

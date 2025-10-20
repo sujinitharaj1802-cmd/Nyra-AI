@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Pet Consultation Bill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pet-accent: #6ee6c9; 
+      --shadow-pet: rgba(110, 230, 201, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --text-color: #fff;
+      --primary-gold: #f5d76e;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-pet);
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--pet-accent);
+      text-shadow: 0 0 15px var(--shadow-pet);
+    }
+    header p {
+        color: #ccc;
+    }
+
+    .bill-container {
+      background: var(--card-bg);
+      border: 3px solid var(--pet-accent);
+      border-radius: 15px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 25px var(--shadow-pet);
+    }
+    
+    .bill-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #444;
+        font-size: 1.1em;
+    }
+    
+    .bill-item strong {
+        color: var(--pet-accent);
+    }
+
+    .bill-total {
+        padding-top: 20px;
+        margin-top: 20px;
+        border-top: 2px solid var(--pet-accent);
+        font-size: 1.5em;
+        font-weight: 700;
+    }
+    
+    .bill-total span {
+        color: var(--pet-accent);
+    }
+
+    .pay-btn {
+        width: 100%;
+        margin-top: 40px;
+        padding: 15px;
+        background: var(--pet-accent);
+        color: var(--dark-bg);
+        border: none;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+
+    .note {
+        margin-top: 20px;
+        font-size: 0.85em;
+        color: #aaa;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Pet Consult Payment Summary 🐾💳</h1>
+    <p>Review the details before proceeding to a secure payment gateway.</p>
+  </header>
+
+  <div class="bill-container">
+    <h2>Invoice Details</h2>
+
+    <div class="bill-item">
+        <span>Service Type:</span>
+        <strong id="serviceType">Virtual Vet Consult</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Consultant:</span>
+        <strong id="consultantName">Dr. S. Verma</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Scheduled Date & Time:</span>
+        <strong><span id="dateTime">Today, 4:30 PM (IST)</span></strong>
+    </div>
+    
+    <div class="bill-item">
+        <span>Consultation Fee:</span>
+        <strong id="consultFee">$40.00</strong>
+    </div>
+
+    <div class="bill-item" id="mobilityItem" style="display: none;">
+        <span>Mobility Charge (Home Visit):</span>
+        <strong>$20.00</strong>
+    </div>
+
+    <div class="bill-item">
+        <span>Platform Service Charge:</span>
+        <strong>$5.00</strong>
+    </div>
+
+    <div class="bill-total bill-item">
+        <span>Total Payable:</span>
+        <span><strong id="totalPayable">$45.00</strong></span>
+    </div>
+
+    <button class="pay-btn" onclick="alert('Redirecting to Pet Payment Gateway...')">Proceed to Secure Payment</button>
+
+    <p class="note">Pet-specific consultations include access to our full behavioral and diet database. Home visit fees are minimum estimates.</p>
+  </div>
+
+  <button class="back-btn" onclick="history.back()">← Back to Selection</button>
+
+  <footer>© 2025 Nyra AI. Secure Transactions.</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const service = urlParams.get('service') || 'video';
+        let fee = parseFloat(urlParams.get('fee')) || 40.00;
+        const consultant = urlParams.get('consultant');
+        
+        let serviceCharge = 5.00;
+        let mobilityCharge = 0;
+        
+        const isHomeVisit = service === 'home';
+        
+        if (isHomeVisit) {
+            // Adjust charges for home visit
+            mobilityCharge = 20.00;
+            serviceCharge = 10.00;
+            document.getElementById('mobilityItem').style.display = 'flex';
+        }
+
+        const total = fee + serviceCharge + mobilityCharge;
+
+        const serviceMap = {
+            'video': 'Virtual Vet Consult',
+            'home': 'Home Visit Vet'
+        };
+        const consultantMap = {
+            'verma': 'Dr. S. Verma (General Vet)',
+            'patil': 'Dr. P. Patil (Feline Specialist)',
+            'Home Vet Team': 'Home Vet Specialist Team',
+            'default': 'Unspecified Vet' 
+        };
+
+        // Populate elements
+        document.getElementById('serviceType').textContent = serviceMap[service] || serviceMap['video'];
+        document.getElementById('consultantName').textContent = consultantMap[consultant] || consultantMap['default'];
+        document.getElementById('consultFee').textContent = `$${fee.toFixed(2)}`;
+        document.getElementById('totalPayable').textContent = `$${total.toFixed(2)}`;
+        
+        // Dynamic date time (Placeholder)
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        const dateString = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        document.getElementById('dateTime').textContent = `${dateString}, ${timeString}`;
+    });
+  </script>
+</body>
+</html>

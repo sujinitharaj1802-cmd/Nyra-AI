@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Book Pet Home Visit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pet-accent: #6ee6c9;
+      --shadow-pet: rgba(110, 230, 201, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --text-color: #fff;
+      --primary-gold: #f5d76e;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--pet-accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-pet);
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--pet-accent);
+      text-shadow: 0 0 15px var(--shadow-pet);
+    }
+    header p {
+        color: var(--primary-gold);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      padding: 20px 0;
+    }
+    
+    .schedule-form {
+        background: var(--card-bg);
+        border: 2px solid var(--pet-accent);
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 0 15px var(--shadow-pet);
+    }
+
+    .schedule-form h2 {
+        color: var(--pet-accent);
+        margin-top: 0;
+        border-bottom: 1px solid #333;
+        padding-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-color);
+        font-weight: 600;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+        width: calc(100% - 24px);
+        padding: 12px;
+        border: 1px solid #555;
+        border-radius: 8px;
+        background: #1a1a1a;
+        color: var(--text-color);
+        font-size: 1em;
+    }
+
+    .fee-display {
+        background: #1a1a1a;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        margin-top: 20px;
+        border: 1px dashed var(--pet-accent);
+    }
+
+    .fee-display strong {
+        font-size: 1.8em;
+        color: var(--pet-accent);
+        display: block;
+        margin-top: 5px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        margin-top: 30px;
+        padding: 15px;
+        background: var(--pet-accent);
+        color: var(--dark-bg);
+        border: none;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: var(--pet-accent);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Book a Vet Home Visit 🏡</h1>
+    <p>Schedule a certified veterinarian to visit your location for your pet's in-person check-up.</p>
+  </header>
+
+  <div class="container">
+    
+    <div class="schedule-form">
+        <h2>Schedule Your Pet's Home Check</h2>
+        <form onsubmit="redirectToBill(event)">
+            <div class="form-group">
+                <label for="address">Full Address</label>
+                <input type="text" id="address" placeholder="Enter street address, city, and zip code" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="dateTime">Preferred Date & Time</label>
+                <input type="datetime-local" id="dateTime" required>
+            </div>
+
+            <div class="form-group">
+                <label for="specialty">Type of Pet</label>
+                <select id="specialty" required>
+                    <option value="Dog">Dog</option>
+                    <option value="Cat">Cat</option>
+                    <option value="Bird">Bird/Exotic Pet</option>
+                    <option value="Other">Other Pet</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="symptoms">Brief Description of Pet's Symptoms</label>
+                <textarea id="symptoms" rows="3" placeholder="e.g., Lethargic, not eating, limping"></textarea>
+            </div>
+            
+            <div class="fee-display">
+                Estimated Minimum Pet Home Visit Fee:
+                <strong>$120.00</strong>
+            </div>
+
+            <button type="submit" class="submit-btn">Review Bill & Confirm Booking</button>
+        </form>
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='pet_teleconsult.html'">← Back to Consult Options</button>
+
+  <footer>© 2025 Nyra AI. Pet Wellness Network.</footer>
+
+  <script>
+    function redirectToBill(event) {
+        event.preventDefault();
+        const homeConsultFee = 120.00; 
+        window.location.href = `pet_teleconsult_bill.html?service=home&consultant=Home%20Vet%20Team&fee=${homeConsultFee.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>

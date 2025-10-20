@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nyra AI | Pet Wellness Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --pet-accent: #6ee6c9; /* Teal/Green for Pet focus */
+      --pet-shadow: rgba(110, 230, 201, 0.4);
+      --dark-bg: #0a0a0a;
+      --card-gray: rgba(30, 30, 30, 0.9);
+      --disabled-red: #ff5555;
+      /* Define a neon green color for the glow */
+      --neon-green: #39ff14; 
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--pet-accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--pet-shadow);
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--pet-accent);
+      text-shadow: 0 0 15px var(--pet-shadow);
+    }
+    header p {
+        color: #d6c269;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 40px auto;
+    }
+
+    /* Medicine Grid now takes full width */
+    .med-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .med-card {
+      background: var(--card-gray);
+      border: 2px solid var(--pet-accent);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 15px var(--pet-shadow);
+    }
+
+    .med-card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 10px;
+    }
+
+    .med-card h4 {
+      color: var(--pet-accent);
+      margin: 5px 0;
+      font-size: 1.2em;
+    }
+
+    .med-card p {
+      color: #ccc;
+      font-size: 0.9em;
+      height: 40px;
+    }
+
+    /* Standard Add to Cart Button */
+    .med-card .add-btn {
+      background: linear-gradient(90deg, #37a88e, var(--pet-accent));
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+    
+    /* Consult Required Button/Box Styling */
+    .med-card .consult-required {
+        background: #250000;
+        border: 2px solid var(--disabled-red);
+        color: var(--disabled-red);
+        padding: 10px 15px;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.9em;
+        margin-top: 10px;
+        cursor: not-allowed;
+    }
+
+
+    /* --- FIXED CART VIEW STYLING (BOTTOM-RIGHT) --- */
+    #fixedCartView {
+      position: fixed;
+      bottom: 20px; /* Position at the bottom */
+      right: 20px; /* Position at the right */
+      z-index: 100;
+      padding: 10px 15px;
+      background: rgba(30, 30, 30, 0.9);
+      border: 2px solid var(--neon-green);
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 10px var(--neon-green), 0 0 20px rgba(57, 255, 20, 0.4);
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--neon-green);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #fixedCartView:hover {
+        background: rgba(57, 255, 20, 0.1);
+        transform: scale(1.05);
+    }
+    
+    .cart-count {
+        background: var(--neon-green);
+        color: #000;
+        padding: 2px 7px;
+        border-radius: 50%;
+        margin-left: 5px;
+        font-size: 0.8em;
+        font-weight: 900;
+    }
+    
+    #fixedCartView.disabled {
+        border-color: #555;
+        color: #555;
+        box-shadow: none;
+        cursor: not-allowed;
+        background: rgba(30, 30, 30, 0.9);
+    }
+    /* ------------------------------------- */
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: var(--pet-accent);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1><span style="color:var(--pet-accent);">Pet Wellness Store</span> 🐾</h1>
+    <p>Essential medicines and supplements for your best friend.</p>
+  </header>
+
+  <div id="fixedCartView" onclick="goToCheckout()">
+    View Cart <span class="cart-count" id="itemCount">0</span>
+  </div>
+    
+  <div class="container">
+    
+    <div class="med-grid">
+      
+      <div class="med-card" data-name="Dewormer" data-price="250">
+        <img src="https://img.icons8.com/external-others-amoghdesign/100/6ee6c9/external-pet-petshop-others-amoghdesign.png" alt="Dewormer" />
+        <h4>Dewormer Tabs</h4>
+        <p>Eliminates internal parasites and ensures gut health.</p>
+        <button class="add-btn" onclick="addToCart(this)">Add to Cart (₹250)</button>
+      </div>
+
+      <div class="med-card" data-name="Calcium Tablets" data-price="380">
+        <img src="https://img.icons8.com/ios-filled/100/6ee6c9/dog-bone.png" alt="Calcium Tablets" />
+        <h4>Calcium Tablets</h4>
+        <p>Supports strong bones, joints, and better mobility.</p>
+        <button class="add-btn" onclick="addToCart(this)">Add to Cart (₹380)</button>
+      </div>
+
+      <div class="med-card" data-name="Multivitamin Drops" data-price="420">
+        <img src="https://img.icons8.com/ios-filled/100/6ee6c9/pet-food.png" alt="Pet Supplements" />
+        <h4>Multivitamin Drops</h4>
+        <p>General wellness formula for a shiny coat and energy.</p>
+        <button class="add-btn" onclick="addToCart(this)">Add to Cart (₹420)</button>
+      </div>
+      
+      <div class="med-card" data-name="Flea & Tick Spray" data-price="550">
+        <img src="https://img.icons8.com/ios-filled/100/6ee6c9/spray-bottle.png" alt="Flea Spray" />
+        <h4>Flea & Tick Spray</h4>
+        <p>Fast relief from external parasites and itchiness.</p>
+        <button class="add-btn" onclick="addToCart(this)">Add to Cart (₹550)</button>
+      </div>
+
+      <div class="med-card" data-name="Wound Ointment" data-price="190">
+        <img src="https://img.icons8.com/ios-filled/100/6ee6c9/bandage.png" alt="Wound Ointment" />
+        <h4>Wound Ointment</h4>
+        <p>Antiseptic cream for minor cuts and abrasions.</p>
+        <button class="add-btn" onclick="addToCart(this)">Add to Cart (₹190)</button>
+      </div>
+      
+      <div class="med-card" data-name="Digestive Aid" data-price="310">
+        <img src="https://img.icons8.com/ios-filled/100/ff5555/stomach.png" alt="Digestive Aid" />
+        <h4 style="color:var(--disabled-red);">Prescription Aid</h4>
+        <p>Advanced formula requires veterinary diagnosis.</p>
+        <div class="consult-required">
+            You can't buy this medicine without doctor consult 🩺
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='pet_home.html'">← Back to Dashboard</button>
+
+  <footer>© 2025 Nyra AI. Pet Wellness in Every Dose.</footer>
+
+  <script>
+    const STORAGE_KEY = 'nyra_pet_cart'; 
+
+    function getCart() {
+        const cartJson = localStorage.getItem(STORAGE_KEY);
+        return cartJson ? JSON.parse(cartJson) : {};
+    }
+
+    function saveCart(cart) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+        renderCart(); 
+    }
+
+    function addToCart(button) {
+        const card = button.closest('.med-card');
+        const name = card.dataset.name;
+        const price = parseFloat(card.dataset.price);
+
+        let cart = getCart();
+
+        if (cart[name]) {
+            cart[name].quantity += 1;
+        } else {
+            cart[name] = { price: price, quantity: 1 };
+        }
+
+        // Show a quick visual confirmation (optional)
+        button.textContent = 'Added! (+1)';
+        setTimeout(() => {
+            button.textContent = `Add to Cart (₹${price.toFixed(0)})`;
+        }, 800);
+
+        saveCart(cart);
+    }
+
+    function renderCart() {
+        const cart = getCart();
+        const itemCountElement = document.getElementById('itemCount');
+        const fixedCartView = document.getElementById('fixedCartView');
+        let totalItems = 0;
+
+        for (const name in cart) {
+            totalItems += cart[name].quantity;
+        }
+        
+        itemCountElement.textContent = totalItems;
+        
+        // Disable the fixed view cart button if empty
+        if (totalItems === 0) {
+            fixedCartView.classList.add('disabled');
+        } else {
+            fixedCartView.classList.remove('disabled');
+        }
+    }
+    
+    function goToCheckout() {
+        const cart = getCart();
+        if (Object.keys(cart).length === 0) {
+            // Prevent redirect and show alert if cart is empty
+            alert('Your cart is empty. Please add items before viewing the cart.');
+            return;
+        }
+        // Redirect to the dedicated pet checkout page
+        window.location.href = 'pet_checkout.html'; 
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', renderCart);
+  </script>
+</body>
+</html>

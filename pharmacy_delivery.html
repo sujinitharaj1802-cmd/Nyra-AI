@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Order Confirmation & Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pet-accent: #6ee6c9; 
+      --shadow-pet: rgba(110, 230, 201, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --text-color: #fff;
+      --primary-gold: #f5d76e;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-pet);
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--pet-accent);
+      text-shadow: 0 0 15px var(--shadow-pet);
+    }
+    header p {
+        color: #ccc;
+    }
+
+    .delivery-container {
+      background: var(--card-bg);
+      border: 3px solid var(--pet-accent);
+      border-radius: 15px;
+      padding: 40px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 0 25px var(--shadow-pet);
+      text-align: center;
+    }
+    
+    .confirmation-icon {
+        color: var(--pet-accent);
+        font-size: 4em;
+        margin-bottom: 20px;
+        animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); opacity: 0.8; }
+      to { transform: scale(1.05); opacity: 1; }
+    }
+
+    .delivery-details {
+        text-align: left;
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px dashed #444;
+        border-radius: 10px;
+    }
+
+    .delivery-details h3 {
+        color: var(--pet-accent);
+        border-bottom: 1px solid #444;
+        padding-bottom: 10px;
+        margin-top: 0;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        font-size: 1.1em;
+        border-bottom: 1px solid #222;
+    }
+    .detail-row span:first-child {
+        color: #ccc;
+    }
+    .detail-row strong {
+        color: var(--pet-accent);
+    }
+    
+    .tracking-btn {
+        margin-top: 30px;
+        padding: 12px 25px;
+        background: var(--pet-accent);
+        color: var(--dark-bg);
+        border: none;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: var(--primary-gold);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Order Confirmed! 📦</h1>
+    <p>Your pet medication is being prepared for dispatch.</p>
+  </header>
+
+  <div class="delivery-container">
+    <div class="confirmation-icon">✔</div>
+    <h2 style="color: var(--text-color);">Thank You for Your Order!</h2>
+    <p style="color: #ccc; font-size: 1.1em;">Your order confirmation number is **NYRA-PET-78351**.</p>
+    
+    <div class="delivery-details">
+        <h3>Delivery Information</h3>
+        
+        <div class="detail-row">
+            <span>Estimated Delivery:</span>
+            <strong><span id="deliveryTime">Tomorrow, between 11:00 AM - 3:00 PM</span></strong>
+        </div>
+        
+        <div class="detail-row">
+            <span>Shipping Address:</span>
+            <strong>123 Pet Lane, Wellness City, 90210</strong>
+        </div>
+        
+        <div class="detail-row">
+            <span>Item Ordered:</span>
+            <strong id="orderedItem">VetBiome Digestive Support</strong>
+        </div>
+        
+        <div class="detail-row">
+            <span>Order Total:</span>
+            <strong id="orderTotal">$28.00</strong>
+        </div>
+        
+        <div class="detail-row">
+            <span>Payment Method:</span>
+            <strong>Credit Card (**** 4567)</strong>
+        </div>
+    </div>
+    
+    <button class="tracking-btn" onclick="alert('Simulating order tracking page...')">Track Shipment</button>
+
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='pet_home.html'">← Return to Dashboard</button>
+
+  <footer>© 2025 Nyra AI. Secure Pet Pharmacy.</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const item = decodeURIComponent(urlParams.get('item') || 'VetBiome Digestive Support');
+        const total = urlParams.get('total') || '28.00';
+        
+        document.getElementById('orderedItem').textContent = item;
+        document.getElementById('orderTotal').textContent = `$${parseFloat(total).toFixed(2)}`;
+        
+        // Dynamic estimation logic (simulated)
+        const now = new Date();
+        now.setDate(now.getDate() + 1); // Tomorrow
+        const dateString = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        document.getElementById('deliveryTime').textContent = `${dateString}, between 11:00 AM - 3:00 PM`;
+    });
+  </script>
+</body>
+</html>

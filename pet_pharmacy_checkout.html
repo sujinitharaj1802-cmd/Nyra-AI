@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Pet Pharmacy Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pet-accent: #6ee6c9; 
+      --shadow-pet: rgba(110, 230, 201, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --text-color: #fff;
+      --primary-gold: #f5d76e;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-pet);
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--pet-accent);
+      text-shadow: 0 0 15px var(--shadow-pet);
+    }
+    header p {
+        color: #ccc;
+    }
+
+    .checkout-container {
+      background: var(--card-bg);
+      border: 3px solid var(--pet-accent);
+      border-radius: 15px;
+      padding: 40px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 25px var(--shadow-pet);
+    }
+    
+    .item-card {
+        background: #1a1a1a;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 5px solid var(--pet-accent);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .item-card h3 {
+        color: var(--pet-accent);
+        margin: 0;
+    }
+    .item-card p {
+        margin: 5px 0 0 0;
+        color: #ccc;
+        font-size: 0.9em;
+    }
+    .item-price {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: var(--pet-accent);
+    }
+
+    .bill-summary {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #444;
+    }
+    .bill-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+    }
+    .bill-total {
+        margin-top: 15px;
+        border-top: 2px solid var(--pet-accent);
+        padding-top: 15px;
+        font-size: 1.4em;
+        font-weight: 700;
+        color: var(--pet-accent);
+    }
+    
+    .pay-btn {
+        width: 100%;
+        margin-top: 40px;
+        padding: 15px;
+        background: var(--pet-accent);
+        color: var(--dark-bg);
+        border: none;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: var(--pet-accent);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Pet Pharmacy Checkout 🛒</h1>
+    <p>Confirm your medication order based on Nyra AI's recommendation.</p>
+  </header>
+
+  <div class="checkout-container">
+    <h2>Your Order</h2>
+    
+    <div class="item-card">
+        <div>
+            <h3 id="medicineName">VetBiome Digestive Support</h3>
+            <p id="medicineDetails">Recommended Probiotic for mild GI issues. 30-day supply.</p>
+        </div>
+        <span class="item-price" id="medicinePrice">$25.00</span>
+    </div>
+
+    <div class="bill-summary">
+        <div class="bill-item">
+            <span>Subtotal:</span>
+            <span id="subtotal">$25.00</span>
+        </div>
+        <div class="bill-item">
+            <span>Shipping & Handling:</span>
+            <span>$5.00</span>
+        </div>
+        <div class="bill-item">
+            <span>Nyra AI Discount:</span>
+            <span style="color: var(--pet-accent);">- $2.00</span>
+        </div>
+        
+        <div class="bill-total bill-item">
+            <span>Order Total:</span>
+            <span id="orderTotal">$28.00</span>
+        </div>
+    </div>
+
+    <button class="pay-btn" onclick="redirectToDelivery()">Complete Order & Pay</button>
+
+  </div>
+
+  <button class="back-btn" onclick="history.back()">← Back to AI Consult</button>
+
+  <footer>© 2025 Nyra AI. Secure Pet Pharmacy.</footer>
+
+  <script>
+    const SHIPPING_FEE = 5.00;
+    const AI_DISCOUNT = 2.00;
+
+    /**
+     * Redirects to the delivery confirmation page after payment simulation.
+     */
+    function redirectToDelivery() {
+        // Collect the necessary details to pass to the delivery page
+        const urlParams = new URLSearchParams(window.location.search);
+        const nameElement = document.getElementById('medicineName');
+        const totalElement = document.getElementById('orderTotal');
+
+        const name = nameElement ? nameElement.textContent : 'VetBiome Digestive Support'; 
+        const total = totalElement ? totalElement.textContent.replace('$', '') : '28.00'; 
+        
+        // Simulating the payment process and then redirecting
+        alert(`Simulating payment of $${total} and confirming order...`);
+        
+        // Redirect to the delivery page
+        window.location.href = `pharmacy_delivery.html?item=${encodeURIComponent(name)}&total=${total}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        const price = parseFloat(urlParams.get('price'));
+        const details = urlParams.get('details');
+
+        let basePrice = 25.00; // Default if URL params are missing
+        
+        if (price) {
+            basePrice = price;
+            document.getElementById('medicineName').textContent = decodeURIComponent(name);
+            document.getElementById('medicineDetails').textContent = decodeURIComponent(details);
+        }
+
+        // Calculate final prices
+        const subtotal = basePrice;
+        const total = subtotal + SHIPPING_FEE - AI_DISCOUNT;
+        
+        // Populate DOM elements
+        document.getElementById('medicinePrice').textContent = `$${basePrice.toFixed(2)}`;
+        document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+        document.getElementById('orderTotal').textContent = `$${total.toFixed(2)}`;
+    });
+  </script>
+</body>
+</html>

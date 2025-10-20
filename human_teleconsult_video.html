@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Video Consult Doctors</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gold: #f5d76e;
+      --shadow-gold: rgba(245, 215, 110, 0.6);
+      --dark-bg: #0a0a0a;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --text-color: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, var(--dark-bg) 60%, #000);
+      color: var(--primary-gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px var(--shadow-gold);
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: var(--primary-gold);
+      text-shadow: 0 0 15px var(--shadow-gold);
+    }
+    header p {
+        color: var(--text-color);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      padding: 20px 0;
+    }
+    
+    .search-bar {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        padding: 15px;
+        background: var(--card-bg);
+        border-radius: 10px;
+        border: 1px solid var(--primary-gold);
+    }
+    .search-bar input, .search-bar select {
+        padding: 12px;
+        border: 1px solid #555;
+        border-radius: 8px;
+        background: #1a1a1a;
+        color: var(--text-color);
+        font-size: 1em;
+        flex: 1;
+    }
+    .search-bar button {
+        background: var(--primary-gold);
+        color: var(--dark-bg);
+        border: none;
+        padding: 0 25px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .doctor-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .doctor-card {
+        background: var(--card-bg);
+        border: 2px solid var(--primary-gold);
+        border-radius: 15px;
+        padding: 20px;
+        display: flex;
+        gap: 20px;
+        box-shadow: 0 0 10px var(--shadow-gold);
+        transition: transform 0.3s;
+    }
+    
+    .doctor-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .doc-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--primary-gold);
+        background: #1a1a1a;
+    }
+    
+    .doc-details {
+        flex-grow: 1;
+    }
+    .doc-details h3 {
+        color: var(--text-color);
+        margin: 0 0 5px 0;
+        font-size: 1.4em;
+    }
+    .doc-details p {
+        color: #ccc;
+        margin: 2px 0;
+        font-size: 0.9em;
+    }
+    .doc-details .specialty {
+        color: var(--primary-gold);
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .doc-details .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+    }
+    .doc-details .fee {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--primary-gold);
+    }
+
+    .book-btn {
+        background: var(--primary-gold);
+        color: var(--dark-bg);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .back-btn {
+      margin: 40px 0;
+      padding: 10px 25px;
+      background: var(--primary-gold);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Virtual Doctor Appointments 💻</h1>
+    <p>Select a general physician or specialist for your remote consultation.</p>
+  </header>
+
+  <div class="container">
+    
+    <div class="search-bar">
+        <input type="text" placeholder="Search by Specialty, Name, or Time..." />
+        <select>
+            <option value="">Filter by Specialty</option>
+            <option>General Physician</option>
+            <option>Cardiologist</option>
+            <option>Dermatologist</option>
+        </select>
+        <button onclick="alert('Searching...')">Search</button>
+    </div>
+
+    <div class="doctor-grid">
+        
+        <div class="doctor-card">
+            <img src="https://img.icons8.com/ios-filled/100/f5d76e/doctor-male.png" alt="Dr. Sharma" class="doc-avatar" />
+            <div class="doc-details">
+                <h3>Dr. R. Sharma</h3>
+                <p class="specialty">Cardiologist (Heart Specialist)</p>
+                <p><strong>Experience:</strong> 15 years | <strong>Rating:</strong> 4.9/5 (120 reviews)</p>
+                <div class="info-row">
+                    <p><strong>Next Available:</strong> Today, 4:00 PM</p>
+                    <p class="fee">Fee: $45.00</p>
+                    <a href="teleconsult_bill.html?service=video&doctor=sharma&fee=45.00" class="book-btn">Book & View Bill</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="doctor-card">
+            <img src="https://img.icons8.com/ios-filled/100/f5d76e/doctor-female.png" alt="Dr. Menon" class="doc-avatar" />
+            <div class="doc-details">
+                <h3>Dr. A. Menon</h3>
+                <p class="specialty">General Physician</p>
+                <p><strong>Experience:</strong> 8 years | <strong>Rating:</strong> 4.7/5 (250 reviews)</p>
+                <div class="info-row">
+                    <p><strong>Next Available:</strong> Today, 5:30 PM</p>
+                    <p class="fee">Fee: $30.00</p>
+                    <a href="teleconsult_bill.html?service=video&doctor=menon&fee=30.00" class="book-btn">Book & View Bill</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='human_teleconsult.html'">← Back to Consult Options</button>
+
+  <footer>© 2025 Nyra AI. Premium Health Services.</footer>
+</body>
+</html>
