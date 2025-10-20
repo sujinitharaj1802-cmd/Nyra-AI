@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Appointment Approvals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(245, 215, 110, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: #f5d76e;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(30, 30, 30, 0.9);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    .section-title {
+        color: #fff;
+        text-align: left;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        font-size: 1.8em;
+        border-bottom: 2px solid #FFD700;
+        padding-bottom: 10px;
+    }
+
+    /* --- Filter Section --- */
+    .filter-section {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .filter-section label {
+        color: #FFD700;
+        margin-right: 10px;
+        font-weight: 600;
+    }
+    .filter-section select {
+        padding: 8px 12px;
+        border: 1px solid #555;
+        background: #1a1a1a;
+        color: #fff;
+        border-radius: 5px;
+        font-size: 1em;
+    }
+    
+    /* --- Appointment List/Table Styling --- */
+    .appointment-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .appointment-table th, .appointment-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #444;
+        color: #ccc;
+    }
+    .appointment-table th {
+        background-color: #1a1a1a;
+        color: #FFD700;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    .appointment-table tr:hover {
+        background-color: #252525;
+    }
+
+    .approve-btn, .reject-btn {
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 700;
+        margin-left: 5px;
+        transition: background-color 0.3s;
+    }
+    .approve-btn {
+        background-color: #5cb85c;
+        color: #000;
+        border: none;
+    }
+    .approve-btn:hover {
+        background-color: #449d44;
+        color: #fff;
+    }
+    .reject-btn {
+        background-color: #d9534f;
+        color: #fff;
+        border: none;
+    }
+    .reject-btn:hover {
+        background-color: #c9302c;
+    }
+
+    .empty-message {
+        color: #d6c269;
+        text-align: center;
+        padding: 30px;
+    }
+
+    .back-btn {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #FFD700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 15px 0;
+      background: rgba(0, 0, 0, 0.5);
+      margin-top: auto;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Appointment Approval Queue</h1>
+    <p style="color: #d6c269">Review and confirm patient requests for live consultations.</p>
+  </header>
+
+  <div class="container">
+    <h2 class="section-title">🕒 Pending Appointments</h2>
+
+    <div class="filter-section">
+        <label for="doctorFilter">Filter by Specialty:</label>
+        <select id="doctorFilter" onchange="renderAppointments()">
+            <option value="All">All Requests</option>
+            <option value="Human">Human Doctor</option>
+            <option value="Vet">Veterinary Doctor</option>
+        </select>
+    </div>
+    
+    <div id="appointmentContainer">
+        </div>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='hospital_landing.html'">
+    ← Back to Hospital Hub
+  </button>
+
+  <footer>© 2025 Nyra AI. Hospital Portal.</footer>
+
+  <script>
+    // Sample Pending Appointments Data
+    let pendingAppointments = [
+        { 
+            id: 'APP-1001', 
+            patient: "Jane Doe", 
+            specialty: "Human", // Added specialty field
+            type: "Video Call", 
+            date: "2025-10-21", 
+            time: "10:00 AM",
+            issue: "Persistent cough for 3 days."
+        },
+        { 
+            id: 'APP-1002', 
+            patient: "Client A. Singh", 
+            specialty: "Human", // Added specialty field
+            type: "Live Meeting", 
+            date: "2025-10-22", 
+            time: "02:30 PM",
+            issue: "Knee pain after sports injury."
+        },
+        { 
+            id: 'APP-1003', 
+            patient: "Whiskers (Pet)", 
+            specialty: "Vet", // Added specialty field
+            type: "Video Call (Vet)", 
+            date: "2025-10-21", 
+            time: "04:00 PM",
+            issue: "Cat not eating, general lethargy."
+        }
+    ];
+
+    /**
+     * Renders the table of pending appointments based on the selected filter.
+     */
+    function renderAppointments() {
+        const selectedFilter = document.getElementById('doctorFilter').value;
+        const container = document.getElementById('appointmentContainer');
+        container.innerHTML = '';
+        
+        let filteredAppointments = pendingAppointments;
+
+        if (selectedFilter !== 'All') {
+            filteredAppointments = pendingAppointments.filter(app => app.specialty === selectedFilter);
+        }
+
+        if (filteredAppointments.length === 0) {
+            container.innerHTML = `<p class="empty-message">🎉 No pending **${selectedFilter !== 'All' ? selectedFilter : ''}** appointments found. You are all caught up!</p>`;
+            return;
+        }
+
+        let tableHTML = `
+            <table class="appointment-table">
+                <thead>
+                    <tr>
+                        <th>ID / Patient</th>
+                        <th>Specialty</th>
+                        <th>Type</th>
+                        <th>Date & Time</th>
+                        <th>Issue</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        filteredAppointments.forEach(app => {
+            tableHTML += `
+                <tr>
+                    <td>${app.id}<br><strong style="color:#FFD700;">${app.patient}</strong></td>
+                    <td>${app.specialty}</td>
+                    <td>${app.type}</td>
+                    <td>${app.date} @ ${app.time}</td>
+                    <td>${app.issue}</td>
+                    <td>
+                        <button class="approve-btn" onclick="handleAction('${app.id}', 'approved')">Approve</button>
+                        <button class="reject-btn" onclick="handleAction('${app.id}', 'rejected')">Reject</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `</tbody></table>`;
+        container.innerHTML = tableHTML;
+    }
+    
+    /**
+     * Handles the approval or rejection of an appointment request.
+     */
+    function handleAction(id, action) {
+        const request = pendingAppointments.find(app => app.id === id);
+        if (!request) return;
+
+        // Remove the processed request
+        pendingAppointments = pendingAppointments.filter(app => app.id !== id);
+
+        if (action === 'approved') {
+            alert(`✅ Appointment ${id} (${request.patient}) approved for ${request.date} at ${request.time}. The patient has been notified.`);
+        } else {
+            const reason = prompt(`Enter a brief reason for rejecting appointment ${id}:`);
+            alert(`❌ Appointment ${id} rejected. Patient notified. Reason: ${reason || 'No reason provided.'}`);
+        }
+        
+        renderAppointments(); // Refresh the list
+    }
+
+
+    // Initial render on load
+    document.addEventListener('DOMContentLoaded', renderAppointments);
+  </script>
+</body>
+</html>
