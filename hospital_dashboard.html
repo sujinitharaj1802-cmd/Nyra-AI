@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Hospital Management Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(245, 215, 110, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: #f5d76e;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(30, 30, 30, 0.9);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    .section-title {
+        color: #fff;
+        text-align: left;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        font-size: 1.8em;
+        border-bottom: 2px solid #FFD700;
+        padding-bottom: 10px;
+    }
+
+    /* --- Filter Section --- */
+    .filter-section {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .filter-section label {
+        color: #FFD700;
+        margin-right: 10px;
+        font-weight: 600;
+    }
+    .filter-section select {
+        padding: 8px 12px;
+        border: 1px solid #555;
+        background: #1a1a1a;
+        color: #fff;
+        border-radius: 5px;
+        font-size: 1em;
+    }
+    
+    /* --- Request Table --- */
+    .request-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .request-table th, .request-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #444;
+        color: #ccc;
+    }
+    .request-table th {
+        background-color: #1a1a1a;
+        color: #FFD700;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    .request-table tr:hover {
+        background-color: #252525;
+    }
+
+    /* --- Action Button --- */
+    .action-btn {
+        background-color: #5cb85c; /* Green for Approve */
+        color: #000;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: background-color 0.3s;
+    }
+    .action-btn:hover {
+        background-color: #449d44;
+    }
+    .action-btn.view {
+        background-color: #428bca; /* Blue for View */
+        color: #fff;
+    }
+    .action-btn.view:hover {
+        background-color: #3071a9;
+    }
+    .empty-message {
+        color: #d6c269;
+        text-align: center;
+        padding: 30px;
+    }
+
+    /* --- Modal Styling --- (Kept the same for brevity) */
+    .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); padding-top: 50px; justify-content: center; align-items: center; }
+    .modal-content { background-color: #1a1a1a; margin: 5% auto; padding: 30px; border: 2px solid #FFD700; width: 90%; max-width: 500px; border-radius: 15px; position: relative; text-align: left; }
+    .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close-btn:hover { color: #fff; }
+    .medicine-list li { margin-bottom: 10px; color: #ccc; list-style-type: none; padding-left: 0; border-bottom: 1px dashed #333; padding-bottom: 5px; }
+    .medicine-list li strong { color: #f5d76e; }
+    .modal-actions { display: flex; justify-content: space-between; margin-top: 25px; }
+    .modal-actions button { flex-grow: 1; margin: 0 10px; padding: 12px; border-radius: 8px; font-weight: 700; }
+    .modal-actions .approve-btn { background-color: #FFD700; color: #000; border: none; }
+    .modal-actions .reject-btn { background-color: #d9534f; color: #fff; border: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hospital Prescription Approvals</h1>
+    <p style="color: #d6c269">Review patient bill requests and authorize medicine delivery.</p>
+  </header>
+
+  <div class="container">
+    <h2 class="section-title">📦 Pending Medicine Requests</h2>
+    
+    <div class="filter-section">
+        <label for="doctorFilter">Filter by Specialty:</label>
+        <select id="doctorFilter" onchange="renderRequests()">
+            <option value="All">All Requests</option>
+            <option value="Human">Human Health</option>
+            <option value="Vet">Veterinary Health</option>
+        </select>
+    </div>
+
+    <div id="requestContainer">
+        </div>
+  </div>
+  
+  <div id="detailModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('detailModal')">&times;</span>
+      <h3 style="color:#FFD700; margin-top:0;">Prescription Details for <span id="modalPatientName"></span></h3>
+      
+      <p style="color:#ccc;">**Request ID:** <span id="modalRequestId"></span></p>
+      <p style="color:#ccc;">**Consulting Doctor:** <span id="modalDoctor"></span></p>
+      
+      <h4 style="color:#fff; border-bottom: 1px solid #444; padding-bottom: 5px;">Medicine List:</h4>
+      <ul id="modalMedicineList" class="medicine-list">
+        </ul>
+      
+      <div class="modal-actions">
+        <button class="approve-btn" onclick="approveRequest()">Approve Prescription & Initiate Delivery</button>
+        <button class="reject-btn" onclick="rejectRequest()">Reject Request</button>
+      </div>
+    </div>
+  </div>
+
+
+  <footer>© 2025 Nyra AI. Hospital Portal.</footer>
+
+  <script>
+    // Sample Pending Requests Data
+    let allRequests = [
+        { 
+            id: 'REQ-4581', 
+            patient: "Rohan Varma", 
+            type: "Human", // Added type field
+            date: "2025-10-18", 
+            doctor: "Dr. Anjali Sharma",
+            medicines: [
+                { name: "Amoxicillin 500mg", qty: 1, days: 7, price: 150.00 },
+                { name: "Paracetamol 650mg", qty: 2, days: 5, price: 50.00 }
+            ]
+        },
+        { 
+            id: 'REQ-4582', 
+            patient: "Priya Patel", 
+            type: "Human", // Added type field
+            date: "2025-10-18", 
+            doctor: "Dr. Suresh Menon",
+            medicines: [
+                { name: "Calcium Supplement", qty: 1, days: 30, price: 300.00 },
+                { name: "Pain Relief Gel", qty: 1, days: null, price: 120.00 }
+            ]
+        },
+        { 
+            id: 'REQ-4583', 
+            patient: "Max (Pet)", 
+            type: "Vet", // Added type field
+            date: "2025-10-19", 
+            doctor: "Dr. Fatima Khan (Vet)",
+            medicines: [
+                { name: "Pet Dewormer", qty: 1, days: 1, price: 450.00 }
+            ]
+        }
+    ];
+    
+    let pendingRequests = [...allRequests]; // Working copy of requests
+    let activeRequestId = null;
+
+    // --- Core Functions ---
+    
+    /**
+     * Renders the table of pending requests based on the selected filter.
+     */
+    function renderRequests() {
+        const selectedFilter = document.getElementById('doctorFilter').value;
+        const container = document.getElementById('requestContainer');
+        container.innerHTML = '';
+        
+        let filteredRequests = pendingRequests;
+
+        if (selectedFilter !== 'All') {
+            filteredRequests = pendingRequests.filter(req => req.type === selectedFilter);
+        }
+
+        if (filteredRequests.length === 0) {
+            container.innerHTML = `<p class="empty-message">🎉 No pending **${selectedFilter !== 'All' ? selectedFilter : ''}** requests found. All processed!</p>`;
+            return;
+        }
+
+        let tableHTML = `
+            <table class="request-table">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Patient Name</th>
+                        <th>Consult Date</th>
+                        <th>Doctor</th> <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        filteredRequests.forEach(req => {
+            tableHTML += `
+                <tr>
+                    <td>${req.id}</td>
+                    <td>${req.patient}</td>
+                    <td>${req.date}</td>
+                    <td>${req.doctor}</td>
+                    <td>
+                        <button class="action-btn view" onclick="openDetailModal('${req.id}')">View Bill</button>
+                        <button class="action-btn" onclick="openDetailModal('${req.id}')">Approve</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `</tbody></table>`;
+        container.innerHTML = tableHTML;
+    }
+    
+    // --- Modal Functions and Action Handlers (Kept logic the same) ---
+    function openDetailModal(id) {
+        const request = pendingRequests.find(req => req.id === id);
+        if (!request) return;
+
+        activeRequestId = id;
+
+        document.getElementById('modalPatientName').textContent = request.patient;
+        document.getElementById('modalRequestId').textContent = request.id;
+        document.getElementById('modalDoctor').textContent = request.doctor;
+
+        const medicineList = document.getElementById('modalMedicineList');
+        medicineList.innerHTML = '';
+        let total = 0;
+
+        request.medicines.forEach(med => {
+            const daysText = med.days ? `${med.days} days` : 'N/A';
+            const itemTotal = med.qty * med.price;
+            total += itemTotal;
+            
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <strong>${med.name}</strong> (Qty: ${med.qty} | Duration: ${daysText}) — Price: ₹${itemTotal.toFixed(2)}
+            `;
+            medicineList.appendChild(li);
+        });
+
+        // Add Total row
+        const totalLi = document.createElement('li');
+        totalLi.style.fontWeight = '700';
+        totalLi.style.color = '#FFD700';
+        totalLi.innerHTML = `<br>TOTAL BILL VALUE: ₹${total.toFixed(2)}`;
+        medicineList.appendChild(totalLi);
+        
+        document.getElementById('detailModal').style.display = 'flex';
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+        activeRequestId = null;
+    }
+
+    function approveRequest() {
+        if (!activeRequestId) return;
+        
+        // Find and remove the approved request
+        const approvedRequest = pendingRequests.find(req => req.id === activeRequestId);
+        pendingRequests = pendingRequests.filter(req => req.id !== activeRequestId);
+        
+        alert(`✅ SUCCESS! Request ${approvedRequest.id} approved for ${approvedRequest.patient}. The medicine order has been sent to dispatch for delivery.`);
+        
+        closeModal('detailModal');
+        renderRequests(); // Refresh the list
+    }
+
+    function rejectRequest() {
+        if (!activeRequestId) return;
+
+        const reason = prompt(`Enter a brief reason for rejecting request ${activeRequestId}:`);
+
+        // Find and remove the rejected request
+        pendingRequests = pendingRequests.filter(req => req.id !== activeRequestId);
+        
+        alert(`❌ Request ${activeRequestId} rejected. The patient has been notified. Reason: ${reason || 'No reason provided.'}`);
+        
+        closeModal('detailModal');
+        renderRequests(); // Refresh the list
+    }
+
+
+    // Initial render on load
+    document.addEventListener('DOMContentLoaded', renderRequests);
+  </script>
+</body>
+</html>

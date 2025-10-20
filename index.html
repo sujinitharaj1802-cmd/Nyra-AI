@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI - Premium Health Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <canvas id="three-bg"></canvas>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Nyra AI</h1>
+      <p>Where Human & Pet Health Meet Smart AI</p>
+      <p class="subtext">Premium AI-powered healthcare management</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card-container">
+
+      <div class="glass-card">
+        <img src="https://img.icons8.com/ios-filled/100/FFD700/user-male-circle.png" alt="Patient">
+        <h3>Patient</h3>
+        <p>Manage your health and your pets' well-being</p>
+        <button onclick="window.location.href='profiles.html'">Enter Patient Portal</button>
+      </div>
+
+      <div class="glass-card">
+        <img src="https://img.icons8.com/ios-filled/100/FFD700/hospital-3.png" alt="Hospital">
+        <h3>Hospital</h3>
+        <p>Verification and management portal for healthcare providers</p>
+        <button onclick="window.location.href='hospital_signup.html'">Hospital Sign Up</button> 
+      </div>
+      
+      <div class="glass-card">
+        <img src="https://img.icons8.com/ios-filled/100/FFD700/stethoscope.png" alt="Doctor">
+        <h3>Doctor/Vet</h3>
+        <p>Separate portal for individual practitioners</p>
+        <button disabled>Coming Soon</button>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Three.js Background Script (Kept for continuity)
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({canvas: document.getElementById('three-bg'), alpha: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0xFFD700, 2);
+    pointLight.position.set(10, 10, 10);
+    scene.add(pointLight);
+    const objects = [];
+    const geometryCube = new THREE.BoxGeometry();
+    const geometrySphere = new THREE.SphereGeometry(0.5,32,32);
+    const materialCube = new THREE.MeshStandardMaterial({color:0xFFD700, metalness:0.6, roughness:0.3, transparent:true, opacity:0.7});
+    const materialSphere = new THREE.MeshStandardMaterial({color:0xE0C97F, metalness:0.6, roughness:0.3, transparent:true, opacity:0.7});
+    for(let i=0;i<30;i++){
+      let mesh;
+      if(Math.random() < 0.5){
+        mesh = new THREE.Mesh(geometryCube, materialCube);
+      } else {
+        mesh = new THREE.Mesh(geometrySphere, materialSphere);
+      }
+      mesh.position.x = (Math.random()-0.5)*50;
+      mesh.position.y = (Math.random()-0.5)*50;
+      mesh.position.z = (Math.random()-0.5)*50;
+      mesh.rotation.x = Math.random()*Math.PI;
+      mesh.rotation.y = Math.random()*Math.PI;
+      scene.add(mesh);
+      objects.push(mesh);
+    }
+    camera.position.z = 30;
+    function animate(){
+      requestAnimationFrame(animate);
+      objects.forEach(obj => {
+        obj.rotation.x += 0.005;
+        obj.rotation.y += 0.005;
+      });
+      renderer.render(scene, camera);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

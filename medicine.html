@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nyra AI | Medicine Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* NOTE: CSS from previous iterations is included for completeness */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(245, 215, 110, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: #f5d76e;
+      letter-spacing: 2px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 20px;
+    }
+
+    .tab-button {
+      background: rgba(40, 40, 40, 0.8);
+      color: #f5d76e;
+      border: 1px solid #333;
+      padding: 12px 25px;
+      cursor: pointer;
+      font-size: 1.1em;
+      border-radius: 8px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .tab-button.active {
+      background: #FFD700;
+      color: #000;
+      font-weight: 700;
+      border-color: #FFD700;
+    }
+
+    .tab-content {
+      display: none;
+      width: 90%;
+      max-width: 1200px;
+      padding: 40px 0;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .med-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 20px 0;
+    }
+
+    .med-card {
+      background: rgba(30, 30, 30, 0.8);
+      border: 2px solid #333;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .med-card.prescription-required {
+        border-color: #f55a5a; 
+        background: rgba(40, 30, 30, 0.8);
+    }
+    
+    .med-card:hover {
+      border-color: #FFD700;
+      box-shadow: 0 0 15px rgba(245, 215, 110, 0.5);
+    }
+    .med-card.prescription-required:hover {
+      border-color: #f55a5a; 
+      box-shadow: 0 0 15px rgba(245, 90, 90, 0.5);
+    }
+
+    .med-card img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+
+    .med-card h4 {
+      color: #fff;
+      margin: 5px 0;
+    }
+
+    .med-card p {
+      color: #ccc;
+      font-size: 0.9em;
+      margin-bottom: 15px;
+    }
+
+    .med-card.prescription-required p {
+        color: #ffaaaa;
+        font-weight: 600;
+    }
+
+    .med-card button {
+      background-color: #FFD700;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
+
+    .med-card button:hover {
+      background-color: #E0C97F;
+    }
+    
+    .buy-btn, 
+    .delivery-prompt button {
+      margin-top: 15px;
+      padding: 12px 30px !important;
+      font-size: 1.1em !important;
+      width: 100%;
+      background-color: #FFD700 !important;
+      color: #000 !important;
+      font-weight: 700 !important;
+      border: none !important;
+    }
+    .buy-btn:hover, 
+    .delivery-prompt button:hover {
+        background-color: #E0C97F !important;
+    }
+
+    .back-btn {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #FFD700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 15px 0;
+      background: rgba(0, 0, 0, 0.5);
+      margin-top: auto;
+      color: #aaa;
+    }
+
+    /* --- Cart & Delivery Styles --- */
+    .cart-summary {
+      background: rgba(30, 30, 30, 0.9);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 40px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .cart-summary h3 {
+      color: #FFD700;
+      margin-top: 0;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      margin-bottom: 5px;
+      font-size: 0.95em;
+    }
+    
+    .delivery-prompt {
+      padding: 20px;
+      border: 1px solid #FFD700;
+      border-radius: 10px;
+      background: #1e1e1e;
+      margin-top: 20px;
+      display: none; 
+      text-align: left; /* Align text left for input labels */
+    }
+    .delivery-prompt label {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        color: #FFD700;
+        font-weight: 600;
+    }
+    .delivery-prompt input, .delivery-prompt textarea {
+        padding: 10px;
+        width: calc(100% - 22px);
+        border: 1px solid #555;
+        background: #000;
+        color: #fff;
+        border-radius: 5px;
+        box-sizing: border-box; /* Include padding in width calculation */
+        resize: none; /* Prevent resizing on textarea */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Medicine Delivery</h1>
+    <p style="color: #d6c269">Order prescribed or pet medicines easily and securely.</p>
+  </header>
+
+  <div class="cart-summary">
+    <h3>🛒 My Cart (<span id="cartCount">0</span> Items)</h3>
+    <div id="cartItems">
+      <p style="color: #aaa; font-style: italic;">Your cart is empty.</p>
+    </div>
+    <button class="med-card button buy-btn" onclick="checkout()" id="checkoutBtn" disabled>
+      Proceed to Delivery
+    </button>
+    
+    <div class="delivery-prompt" id="deliveryPrompt">
+        <label for="mobileNumber">Enter Mobile Number:</label>
+        <input type="tel" id="mobileNumber" placeholder="+91 98765 43210" maxlength="15" required>
+        
+        <label for="deliveryAddress">Enter Full Delivery Address:</label>
+        <textarea id="deliveryAddress" rows="3" placeholder="Apartment, Street, City, Pin Code" required></textarea>
+        
+        <button class="med-card button" onclick="placeOrder()">Place Order</button>
+    </div>
+    
+  </div>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="openTab('human')">Human Medicines</button>
+    <button class="tab-button" onclick="openTab('pet')">Pet Medicines</button>
+  </div>
+
+  <div id="human" class="tab-content active">
+    <div class="med-grid">
+      <div class="med-card" data-name="Paracetamol 500mg" data-price="2.50" data-rx="false">
+        <img src="https://img.icons8.com/ios-filled/100/f5d76e/pill.png" alt="Paracetamol" />
+        <h4>Paracetamol 500mg</h4>
+        <p>Pain and fever relief</p>
+        <button onclick="addToCart(this)">Add to Cart</button>
+      </div>
+      <div class="med-card" data-name="Insulin Pen" data-price="450.00" data-rx="false">
+        <img src="https://img.icons8.com/ios-filled/100/f5d76e/syringe.png" alt="Insulin" />
+        <h4>Insulin Pen (3ml)</h4>
+        <p>Diabetes management</p>
+        <button onclick="addToCart(this)">Add to Cart</button>
+      </div>
+      <div class="med-card" data-name="Multivitamins" data-price="150.00" data-rx="false">
+        <img src="https://img.icons8.com/ios-filled/100/f5d76e/pills.png" alt="Multivitamins" />
+        <h4>Multivitamins</h4>
+        <p>Daily essential nutrients</p>
+        <button onclick="addToCart(this)">Add to Cart</button>
+      </div>
+      
+      <div class="med-card prescription-required" data-name="Zolpidem 10mg" data-price="850.00" data-rx="true">
+        <img src="https://img.icons8.com/ios-filled/100/f55a5a/sleep-in-bed.png" alt="Zolpidem" />
+        <h4 style="color: #ff5a5a;">Zolpidem 10mg</h4>
+        <p>Requires Doctor's Prescription to Purchase</p>
+        <button onclick="addToCart(this)" style="background-color: #f55a5a; color: #fff;">Contact Doctor</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pet" class="tab-content">
+    <div class="med-grid">
+      <div class="med-card" data-name="Pet Dewormer" data-price="200.00" data-rx="false">
+        <img src="https://img.icons8.com/external-others-amoghdesign/100/f5d76e/external-pet-petshop-others-amoghdesign.png" alt="Dewormer" />
+        <h4>Dewormer</h4>
+        <p>Eliminates internal parasites</p>
+        <button onclick="addToCart(this)">Add to Cart</button>
+      </div>
+      <div class="med-card" data-name="Calcium Tablets" data-price="180.00" data-rx="false">
+        <img src="https://img.icons8.com/ios-filled/100/f5d76e/dog-bone.png" alt="Calcium Tablets" />
+        <h4>Calcium Tablets</h4>
+        <p>Bone & joint health</p>
+        <button onclick="addToCart(this)">Add to Cart</button>
+      </div>
+      <div class="med-card" data-name="Pet Supplements" data-price="320.00" data-rx="false">
+        <img src="https://img.icons8.com/ios-filled/100/f5d76e/pet-food.png" alt="Pet Supplements" />
+        <h4>Pet Supplements</h4>
+        <p>General wellness formula</p>
+        <button onclick="addToCart(this)">Add to Cart</button>
+      </div>
+      
+      <div class="med-card prescription-required" data-name="Canine Antibiotics" data-price="600.00" data-rx="true">
+        <img src="https://img.icons8.com/ios-filled/100/f55a5a/hospital.png" alt="Antibiotics" />
+        <h4 style="color: #ff5a5a;">Canine Antibiotics</h4>
+        <p>Requires Vet's Prescription to Purchase</p>
+        <button onclick="addToCart(this)" style="background-color: #f55a5a; color: #fff;">Contact Vet</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='home.html'">
+    ← Back to Dashboard
+  </button>
+
+  <footer>© 2025 Nyra AI. Wellness in Every Dose.</footer>
+
+  <script>
+    // --- Tab Switching Logic (Omitted for brevity, remains unchanged) ---
+    function openTab(tabName) {
+      const tabs = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
+      document.getElementById(tabName).classList.add('active');
+
+      const buttons = document.getElementsByClassName('tab-button');
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('active');
+      }
+      if (tabName === 'human') {
+        buttons[0].classList.add('active');
+      } else if (tabName === 'pet') {
+        buttons[1].classList.add('active');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        openTab('human');
+    });
+
+    // --- Cart & Delivery Logic (Updated for Address) ---
+    let cart = {}; 
+
+    function updateCartDisplay() {
+      const cartItemsDiv = document.getElementById('cartItems');
+      const cartCountSpan = document.getElementById('cartCount');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      let totalItems = 0;
+      
+      cartItemsDiv.innerHTML = '';
+      
+      if (Object.keys(cart).length === 0) {
+        cartItemsDiv.innerHTML = '<p style="color: #aaa; font-style: italic;">Your cart is empty.</p>';
+        checkoutBtn.disabled = true;
+        document.getElementById('deliveryPrompt').style.display = 'none'; 
+        return;
+      }
+      
+      for (const [name, count] of Object.entries(cart)) {
+        if (count > 0) {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'cart-item';
+          itemDiv.innerHTML = `
+            <span>${name}</span>
+            <span>x${count}</span>
+          `;
+          cartItemsDiv.appendChild(itemDiv);
+          totalItems += count;
+        }
+      }
+      
+      cartCountSpan.textContent = totalItems;
+      checkoutBtn.disabled = totalItems === 0;
+    }
+
+    function addToCart(buttonElement) {
+      const card = buttonElement.closest('.med-card');
+      const name = card.getAttribute('data-name');
+      const requiresRx = card.getAttribute('data-rx') === 'true'; 
+      
+      if (requiresRx) {
+          alert(`
+            ⚠️ Prescription Required ⚠️
+            
+            "${name}" cannot be added to the cart without a doctor's prescription.
+            
+            Please use the Teleconsult or AI Consult feature to get a valid prescription first.
+          `);
+          return;
+      }
+      
+      cart[name] = (cart[name] || 0) + 1;
+      
+      updateCartDisplay();
+      
+      buttonElement.textContent = 'Added! (+1)';
+      setTimeout(() => {
+        buttonElement.textContent = 'Add to Cart';
+      }, 800);
+    }
+    
+    function checkout() {
+        const deliveryPrompt = document.getElementById('deliveryPrompt');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        if (deliveryPrompt.style.display === 'block') {
+            deliveryPrompt.style.display = 'none';
+            checkoutBtn.textContent = 'Proceed to Delivery';
+        } else {
+            deliveryPrompt.style.display = 'block';
+            deliveryPrompt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            checkoutBtn.textContent = 'Cancel Delivery';
+        }
+    }
+    
+    function placeOrder() {
+        const mobileNumber = document.getElementById('mobileNumber').value.trim();
+        const deliveryAddress = document.getElementById('deliveryAddress').value.trim(); // Get the new address value
+        
+        if (mobileNumber === "" || deliveryAddress === "") {
+            alert("Please fill in both the mobile number AND the delivery address.");
+            return;
+        }
+        
+        // Simple validation check (e.g., length)
+        if (mobileNumber.length < 10) {
+             alert("Please enter a valid mobile number (at least 10 digits).");
+             return;
+        }
+        
+        const totalItems = Object.values(cart).reduce((sum, count) => sum + count, 0);
+        
+        // Final confirmation message now includes the address
+        alert(`
+            ✅ Order Confirmed!
+            
+            Total Items: ${totalItems}
+            Delivery to: 
+            ${deliveryAddress}
+            Contact: ${mobileNumber}
+            
+            Nyra AI will dispatch your medicine shortly.
+            Thank you for using Nyra AI!
+        `);
+        
+        // Reset the cart and UI
+        cart = {};
+        document.getElementById('mobileNumber').value = '';
+        document.getElementById('deliveryAddress').value = ''; // Clear the address field
+        updateCartDisplay();
+        document.getElementById('deliveryPrompt').style.display = 'none';
+        document.getElementById('checkoutBtn').textContent = 'Proceed to Delivery';
+    }
+  </script>
+</body>
+</html>

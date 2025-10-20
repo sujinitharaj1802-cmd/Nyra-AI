@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyra AI | Teleconsult</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 0 25px rgba(245, 215, 110, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.4em;
+      color: #f5d76e;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      margin: 40px auto;
+      background: rgba(30, 30, 30, 0.9);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* --- Tabs --- */
+    .tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+        gap: 10px;
+    }
+    .tab-button {
+        flex-grow: 1;
+        background: #333;
+        color: #fff;
+        border: 1px solid #444;
+        padding: 12px 20px;
+        cursor: pointer;
+        font-size: 1.1em;
+        border-radius: 8px;
+        transition: background 0.3s, border-color 0.3s;
+    }
+    .tab-button.active {
+        background: #FFD700;
+        color: #000;
+        font-weight: 700;
+        border-color: #FFD700;
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+    }
+
+    /* --- Form Styling --- */
+    label {
+        display: block;
+        color: #FFD700;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #555;
+        background: #1a1a1a;
+        color: #fff;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 1em;
+        resize: vertical;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        background-color: #FFD700;
+        color: #000;
+        border: none;
+        padding: 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.1em;
+        margin-top: 25px;
+        transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #E0C97F;
+    }
+    
+    .back-btn {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #FFD700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 15px 0;
+      background: rgba(0, 0, 0, 0.5);
+      margin-top: auto;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Teleconsultation</h1>
+    <p style="color: #d6c269">Book a live video call or in-person meeting with a Doctor or Vet.</p>
+  </header>
+
+  <div class="container">
+    <div class="tabs">
+        <button class="tab-button active" onclick="openConsultTab('human')">👨 Human Doctor</button>
+        <button class="tab-button" onclick="openConsultTab('pet')">🐾 Veterinarian</button>
+    </div>
+
+    <div id="human" class="tab-content active">
+        <form id="humanConsultForm" onsubmit="scheduleHumanConsult(event)">
+             <h3 style="color:#fff; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0;">Book a Consultation</h3>
+
+            <label for="humanName">Your Full Name:</label>
+            <input type="text" id="humanName" placeholder="Enter your name" required>
+
+            <label for="humanMeetingType">Type of Meeting:</label>
+            <select id="humanMeetingType" required>
+                <option value="Video Call" selected>Video Call</option>
+                <option value="Live Meeting">Live Meeting (Clinic Visit)</option>
+            </select>
+            
+            <label for="humanDate">Preferred Date:</label>
+            <input type="date" id="humanDate" required>
+            
+            <label for="humanTime">Preferred Time:</label>
+            <input type="time" id="humanTime" required>
+            
+            <label for="humanSymptom">Your Symptoms/Issue:</label>
+            <textarea id="humanSymptom" rows="3" placeholder="Briefly describe your symptoms" required></textarea>
+
+            <button type="submit">Schedule Doctor Consult</button>
+        </form>
+    </div>
+
+    <div id="pet" class="tab-content">
+        <form id="petConsultForm" onsubmit="schedulePetConsult(event)">
+            <h3 style="color:#fff; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0;">Book a Vet Consultation</h3>
+
+            <label for="petName">Pet's Name:</label>
+            <input type="text" id="petName" placeholder="Enter pet's name" required>
+
+            <label for="petType">Type of Pet:</label>
+            <select id="petType" required>
+                <option value="" disabled selected>Select Pet Type</option>
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Other">Other</option>
+            </select>
+            
+            <label for="petMeetingType">Type of Meeting:</label>
+            <select id="petMeetingType" required>
+                <option value="Video Call" selected>Video Call</option>
+                <option value="Live Meeting">Live Meeting (Clinic Visit)</option>
+            </select>
+            
+            <label for="petDate">Preferred Date:</label>
+            <input type="date" id="petDate" required>
+            
+            <label for="petTime">Preferred Time:</label>
+            <input type="time" id="petTime" required>
+            
+            <label for="petSymptom">Pet's Symptoms/Issue:</label>
+            <textarea id="petSymptom" rows="3" placeholder="Briefly describe the pet's issue (e.g., limping, not eating)" required></textarea>
+
+            <button type="submit">Schedule Vet Consult</button>
+        </form>
+    </div>
+
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='home.html'">
+    ← Back to Dashboard
+  </button>
+
+  <footer>© 2025 Nyra AI. Wellness in Every Dose.</footer>
+
+  <script>
+    /**
+     * Schedules the Human Doctor consultation.
+     */
+    function scheduleHumanConsult(event) {
+        event.preventDefault(); // Stop form submission
+
+        const name = document.getElementById('humanName').value;
+        const meetingType = document.getElementById('humanMeetingType').value;
+        const date = document.getElementById('humanDate').value;
+        const time = document.getElementById('humanTime').value;
+        const symptom = document.getElementById('humanSymptom').value;
+
+        alert(`✅ Human Appointment Confirmed!
+        
+        Patient: ${name}
+        Meeting Type: ${meetingType}
+        Date & Time: ${date} at ${time}
+        Issue: ${symptom}
+        
+        A doctor will be assigned and confirm your booking. Thank you.`);
+        
+        document.getElementById('humanConsultForm').reset();
+    }
+
+
+    /**
+     * Schedules the Pet Veterinarian consultation.
+     */
+    function schedulePetConsult(event) {
+        event.preventDefault(); // Stop form submission
+
+        const petName = document.getElementById('petName').value;
+        const petType = document.getElementById('petType').value;
+        const meetingType = document.getElementById('petMeetingType').value;
+        const petDate = document.getElementById('petDate').value;
+        const petTime = document.getElementById('petTime').value;
+        const petSymptom = document.getElementById('petSymptom').value;
+
+        alert(`✅ Vet Consult Confirmed!
+        
+        Pet: ${petName} (${petType})
+        Meeting Type: ${meetingType}
+        Appointment: ${petDate} at ${petTime}
+        Issue: ${petSymptom}
+        
+        A veterinarian will review your request and confirm shortly. Thank you.`);
+        
+        document.getElementById('petConsultForm').reset();
+    }
+
+
+    /**
+     * Handles tab switching (Human vs. Pet).
+     */
+    function openConsultTab(tabName) {
+        const contents = document.getElementsByClassName('tab-content');
+        for (let i = 0; i < contents.length; i++) {
+            contents[i].classList.remove('active');
+        }
+        document.getElementById(tabName).classList.add('active');
+
+        const buttons = document.getElementsByClassName('tab-button');
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('active');
+        }
+        document.querySelector(`.tab-button[onclick*="'${tabName}'"]`).classList.add('active');
+    }
+
+    // Initial setup on load
+    document.addEventListener('DOMContentLoaded', () => {
+        openConsultTab('human'); // Start on the Human Doctor tab
+    });
+  </script>
+</body>
+</html>

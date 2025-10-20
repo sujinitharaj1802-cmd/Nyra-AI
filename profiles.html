@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profiles | Nyra AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #000000 60%, #0a0a0a);
+      color: #f5d76e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      color: #f5d76e;
+      margin-top: 70px;
+      text-shadow: 0 0 20px rgba(245, 215, 110, 0.6);
+    }
+
+    p {
+      color: #d6c269;
+      font-size: 1.1em;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 50px;
+      margin-top: 60px;
+    }
+
+    .glass-card {
+      background: rgba(20, 20, 20, 0.9);
+      border: 1px solid rgba(245, 215, 110, 0.3);
+      border-radius: 20px;
+      width: 260px;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(245, 215, 110, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(245, 215, 110, 0.4);
+    }
+
+    .glass-card img {
+      width: 80px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px rgba(245, 215, 110, 0.5));
+    }
+
+    button {
+      background: linear-gradient(90deg, #b89628, #f5d76e);
+      color: #000;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #f5d76e, #b89628);
+      transform: scale(1.05);
+    }
+
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #111;
+      border: 1px solid rgba(245, 215, 110, 0.3);
+      border-radius: 15px;
+      padding: 30px;
+      width: 350px;
+      box-shadow: 0 0 20px rgba(245, 215, 110, 0.3);
+      color: #f5d76e;
+      text-align: center;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 20px;
+    }
+
+    .modal-content input, textarea, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      background: #222;
+      color: #f5d76e;
+    }
+
+    .close {
+      color: #f5d76e;
+      float: right;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      color: #b3a35b;
+      font-size: 0.9em;
+      border-top: 1px solid rgba(245, 215, 110, 0.2);
+      text-align: center;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Profiles</h1>
+  <p>Manage Human and Pet Profiles<br>Up to 5 profiles per user</p>
+
+  <div class="container">
+    <!-- Human Profile -->
+    <div class="glass-card">
+      <img src="https://img.icons8.com/ios-filled/100/f5d76e/user.png" alt="Human">
+      <h3>Human Profile</h3>
+      <p>Create and manage human health profiles.</p>
+      <button onclick="openModal('humanModal')">Manage</button>
+    </div>
+
+    <!-- Pets Profile -->
+    <div class="glass-card">
+      <img src="https://img.icons8.com/ios-filled/100/f5d76e/paw-print.png" alt="Pets">
+      <h3>Pets Profile</h3>
+      <p>Create and manage profiles for your pets (dogs, cats, birds, etc.).</p>
+      <button onclick="openModal('petModal')">Manage</button>
+    </div>
+  </div>
+
+  <!-- Human Modal -->
+  <div id="humanModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('humanModal')">&times;</span>
+      <h2>Human Profile Details</h2>
+      <form id="humanForm">
+        <input type="text" placeholder="Full Name" required><br>
+        <input type="number" placeholder="Age" required><br>
+        <textarea placeholder="Address" rows="3" required></textarea><br>
+        <input type="tel" placeholder="Phone Number" required><br>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pet Modal -->
+  <div id="petModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('petModal')">&times;</span>
+      <h2>Pet Profile Details</h2>
+      <form id="petForm">
+        <input type="text" placeholder="Pet Name" required><br>
+        <select required>
+          <option value="" disabled selected>Type of Pet</option>
+          <option>Dog</option>
+          <option>Cat</option>
+          <option>Bird</option>
+          <option>Other</option>
+        </select><br>
+        <input type="number" placeholder="Pet Age (in years)" required><br>
+        <textarea placeholder="Pet Health Info (optional)" rows="3"></textarea><br>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>© 2025 Nyra AI. All Rights Reserved.</footer>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    document.getElementById('humanForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Human profile saved successfully!');
+      window.location.href = 'home.html';
+    });
+
+    document.getElementById('petForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Pet profile saved successfully!');
+      window.location.href = 'home.html';
+    });
+
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) modal.style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>
